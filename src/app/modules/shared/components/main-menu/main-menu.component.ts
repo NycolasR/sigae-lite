@@ -51,6 +51,9 @@ export class MainMenuComponent implements OnInit, OnDestroy {
     this.items = [
       {
         label: 'Sigae Lite',
+        command: () => {
+          this.router.navigate(['/inicio']);
+        },
       },
     ];
 
