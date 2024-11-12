@@ -1,0 +1,78 @@
+<div
+  class="d-flex justify-content-center align-items-center vh-100 bg-secondary bg-opacity-25"
+>
+  <div
+    id="form-login"
+    class="bg-light rounded-3"
+    style="width: 300px; height: 300px"
+  >
+    <form id="form-login" [formGroup]="formLogin">
+      <div class="p-grid p-fluid">
+        <h4 class="m-5 mt-4 text-center">Login</h4>
+        <div class="p-col-12 mx-4 mb-5" style="position: relative">
+          <p-floatLabel>
+            <input pInputText id="email" formControlName="email" />
+            <label for="email">E-mail *</label>
+          </p-floatLabel>
+          <app-mensagem-alerta
+            campo="email"
+            mensagem="Este campo é obrigatório."
+            tipoAlerta="required"
+            [formulario]="formLogin"
+          />
+          <app-mensagem-alerta
+            campo="email"
+            mensagem="Insira um e-mail válido."
+            tipoAlerta="emailInvalido"
+            [formulario]="formLogin"
+          />
+        </div>
+
+        <div class="p-col-12 mx-4 mb-4">
+          <p-floatLabel>
+            <p-password
+              formControlName="senha"
+              [feedback]="false"
+              [toggleMask]="true"
+            />
+            <label for="senha">Senha *</label>
+          </p-floatLabel>
+          <app-mensagem-alerta
+            campo="senha"
+            mensagem="Este campo é obrigatório."
+            tipoAlerta="required"
+            [formulario]="formLogin"
+          />
+        </div>
+
+        <div class="flex justify-content-center mx-4">
+          <button
+            pButton
+            pRipple
+            label="Entrar"
+            (click)="fazerLogin()"
+            class="btn btn-primary w-24"
+          ></button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- <form (ngSubmit)="onSubmit()">
+  <input
+    type="text"
+    [(ngModel)]="username"
+    name="username"
+    placeholder="Usuário"
+    required
+  />
+  <input
+    type="password"
+    [(ngModel)]="password"
+    name="password"
+    placeholder="Senha"
+    required
+  />
+  <button type="submit">Login</button>
+</form> -->
