@@ -56,7 +56,13 @@ export class MainMenuComponent implements OnInit, OnDestroy {
 
     if (this.isUsuarioLogado) {
       this.items.push(
-        { label: 'Pessoas', icon: 'pi pi-user' },
+        {
+          label: 'Pessoas',
+          icon: 'pi pi-user',
+          command: () => {
+            this.router.navigate(['/pessoa']);
+          },
+        },
         { label: 'Agenda', icon: 'pi pi-calendar' },
         { label: 'Plano de Ação', icon: 'pi pi-copy' }
       );
@@ -73,6 +79,7 @@ export class MainMenuComponent implements OnInit, OnDestroy {
       this.store.dispatch(logout());
       this.isUsuarioLogado = false;
       this.atualizarItems();
+      this.router.navigate(['/inicio']);
     } else {
       this.router.navigate(['/login']);
     }

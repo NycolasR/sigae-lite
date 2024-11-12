@@ -14,6 +14,12 @@ const routes: Routes = [
     loadChildren: () =>
       import('./modules/home/home.module').then((h) => h.HomeModule),
   },
+  {
+    path: 'pessoa',
+    canActivateChild: [AuthGuard],
+    loadChildren: () =>
+      import('./modules/pessoa/pessoa.module').then((p) => p.PessoaModule),
+  },
 ];
 
 @NgModule({
