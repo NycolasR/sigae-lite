@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pessoa',
@@ -51,7 +52,7 @@ export class PessoaComponent implements OnInit {
     },
   ];
 
-  constructor() {}
+  constructor(private readonly router: Router) {}
 
   ngOnInit() {
     this.pessoas = [
@@ -721,5 +722,9 @@ export class PessoaComponent implements OnInit {
         },
       },
     ];
+  }
+
+  adicionarPessoa() {
+    this.router.navigate(['/pessoa/adicionar']);
   }
 }
