@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule } from '@ngrx/store';
 import { RouterModule } from '@angular/router';
 
@@ -14,6 +15,7 @@ import { SharedSigaeModule } from './modules/shared/shared.module';
 @NgModule({
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule, // Importa o módulo de rotas
     StoreModule.forRoot({ auth: authReducer }), // Configuração do Redux com o reducer de autenticação
     SharedSigaeModule,
