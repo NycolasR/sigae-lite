@@ -1,10 +1,4 @@
-<p-toast />
-<p-confirmDialog
-  key="positionDialog"
-  [position]="'center'"
-  rejectButtonStyleClass="p-button-outlined"
-/>
-<div class="form-dados-contato-content p-grid">
+<div class="form-dados-contato-content">
   <form [formGroup]="formDadosContato" (ngSubmit)="salvarDadosContato()">
     <div class="p-grid p-fluid">
       <div class="row">
@@ -40,8 +34,6 @@
             [formGroupName]="i"
             class="form-group mb-4 d-flex align-items-center"
           >
-            <!-- Input de telefone com largura flexível ocupando todo o espaço disponível
-             deixado pela div dos ícones -->
             <div class="flex-grow-1">
               <p-floatLabel>
                 <input

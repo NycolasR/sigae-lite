@@ -6,6 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { StepperModule } from 'primeng/stepper';
 import { TooltipModule } from 'primeng/tooltip';
+import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputMaskModule } from 'primeng/inputmask';
@@ -35,6 +36,7 @@ import { ProblemasAcoesComponent } from './plano-de-acao-etapas/problemas-acoes/
     FloatLabelModule,
     FormsModule,
     ReactiveFormsModule,
+    CheckboxModule,
   ],
   declarations: [
     PlanoDeAcaoComponent,

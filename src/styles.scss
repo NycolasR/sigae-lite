@@ -59,12 +59,16 @@ input {
   background-color: #fff;
   height: 38px;
 
-}
-.p-dropdown .p-dropdown-label {
-  padding: 0;
+  .p-dropdown-label {
+    padding: 0;
+  }
 }
 
 .label-dropdown {
   margin-left: 10px;
 };
 
+.checkbox-personalizado-maior {
+  width: 20px;
+  height: 20px;
+}

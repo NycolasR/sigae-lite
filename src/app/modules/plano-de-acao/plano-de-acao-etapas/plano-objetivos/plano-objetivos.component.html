@@ -1,3 +1,91 @@
-<p>
-  plano-objetivos works!
-</p>
+<div class="form-dados-contato-content">
+  <form [formGroup]="formPlanoObjetivos" (ngSubmit)="salvarDadosContato()">
+    <div class="p-grid p-fluid">
+      <div class="row">
+        <div class="form-group col-12 col-md-6 mb-4">
+          <h3 class="mb-3">Plano</h3>
+          <p-floatLabel>
+            <input
+              pInputText
+              id="plano-form-dados-contato"
+              formControlName="plano"
+            />
+            <label for="plano">Descrição do plano *</label>
+          </p-floatLabel>
+          <app-mensagem-alerta
+            campo="plano"
+            mensagem="Este campo é obrigatório."
+            tipoAlerta="required"
+            [formulario]="formPlanoObjetivos"
+          />
+        </div>
+      </div>
+    </div>
+    <div formArrayName="objetivos" class="p-grid p-fluid">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <h4 class="mb-3">Objetivos</h4>
+          <div
+            *ngFor="let objetivo of objetivos.controls; let i = index"
+            [formGroupName]="i"
+            class="form-group mb-4 d-flex align-items-center"
+          >
+            <!-- <p-checkbox
+              binary="true"
+              formControlName="objetivoSelecionado"
+              class="checkbox-objetivo"
+            /> -->
+
+            <input
+              type="checkbox"
+              id="objetivoSelecionado"
+              formControlName="objetivoSelecionado"
+              class="form-check-input checkbox-personalizado-maior mr-2"
+            />
+
+            <div class="flex-grow-1">
+              <p-floatLabel>
+                <input
+                  pInputText
+                  id="objetivo-{{ i }}"
+                  formControlName="objetivo"
+                />
+                <label for="objetivo-{{ i }}">Objetivo {{ i + 1 }}</label>
+              </p-floatLabel>
+            </div>
+
+            <div class="d-flex" style="width: 60px; justify-content: center">
+              <button
+                type="button"
+                class="btn p-0 me-2"
+                *ngIf="objetivos.length > 1"
+                (click)="removerObjetivo(i)"
+                pTooltip="Excluir objetivo"
+                tooltipPosition="top"
+              >
+                <i class="pi pi-trash"></i>
+              </button>
+              <button
+                type="button"
+                class="btn p-0"
+                *ngIf="i === objetivos.length - 1"
+                (click)="adicionarObjetivo()"
+                pTooltip="Adicionar objetivo"
+                tooltipPosition="top"
+              >
+                <i class="pi pi-plus"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="p-grid p-fluid">
+      <div class="col-12 col-md-6 mb-4">
+        <button type="submit" class="btn btn-primary">
+          Próximo <i class="pi pi-arrow-right ml-2"></i>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
