@@ -32,10 +32,8 @@ export class MainMenuComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // Despachar o token para o `Store` apenas se estiver presente no `localStorage`
     this.tokenService.salvarToken(localStorage.getItem('token'));
 
-    // Inscrição no estado de autenticação
     this.authState$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((authState) => {
@@ -43,7 +41,6 @@ export class MainMenuComponent implements OnInit, OnDestroy {
         this.atualizarItems();
       });
 
-    // Atualizar o menu de acordo com o estado inicial do usuário
     this.atualizarItems();
   }
 
@@ -67,7 +64,13 @@ export class MainMenuComponent implements OnInit, OnDestroy {
           },
         },
         { label: 'Agenda', icon: 'pi pi-calendar' },
-        { label: 'Plano de Ação', icon: 'pi pi-copy' }
+        {
+          label: 'Plano de Ação',
+          icon: 'pi pi-copy',
+          command: () => {
+            this.router.navigate(['/plano-de-acao']);
+          },
+        }
       );
     }
   }
