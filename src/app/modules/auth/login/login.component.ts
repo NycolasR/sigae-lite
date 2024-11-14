@@ -18,11 +18,9 @@ export class LoginComponent implements OnInit {
     private readonly router: Router,
     private readonly formBuilder: FormBuilder
   ) {
-    // Observa mudanças no estado de autenticação para redirecionar após login
     this.store.select('auth').subscribe((authState) => {
       if (authState.token) {
-        // Verifica se o token está presente no estado
-        this.router.navigate(['/inicio']); // Redireciona para a rota protegida
+        this.router.navigate(['/inicio']);
       }
     });
   }

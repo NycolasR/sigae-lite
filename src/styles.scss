@@ -45,13 +45,11 @@ input {
   border-radius: 50%;
 }
 
-// Alinhamento dos elementos do stepper entrando em conformidade com o protótipo
 .p-stepper-action {
   display: flex;
   flex-direction: column;
 }
 
-// Padronizando dropdowns
 .p-dropdown {
   border: 1px solid #ced4da;
   border-radius: 0.25rem;

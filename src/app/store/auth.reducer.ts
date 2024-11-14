@@ -13,10 +13,9 @@ const initialState: AuthState = {
 export const authReducer = (state = initialState, action: any): AuthState => {
   switch (action.type) {
     case LOGIN:
-      // Geração do token fake
       const fakeToken = `token_${new Date().getTime()}`;
-      localStorage.setItem('token', fakeToken); // Cache do token
-      localStorage.setItem('password', action.payload.password); // Cache da senha
+      localStorage.setItem('token', fakeToken);
+      localStorage.setItem('password', action.payload.password);
       return {
         ...state,
         username: action.payload.username,

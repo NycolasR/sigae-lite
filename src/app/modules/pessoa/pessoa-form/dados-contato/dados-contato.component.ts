@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { validarEmail } from '../../../shared/validadores/email-validator';
 import {
   MSG_FORMULARIO_INVALIDO,
   MSG_PREENCHIMENTO_INCORRETO,
-} from '../../../../mensagens/mensagens';
-import { validarEmail } from '../../../../validadores/email-validator';
+} from '../../../shared/mensagens/mensagens';
 
 @Component({
   selector: 'app-dados-contato',
