@@ -16,10 +16,10 @@ import { SharedSigaeModule } from './modules/shared/shared.module';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    AppRoutingModule, // Importa o módulo de rotas
-    StoreModule.forRoot({ auth: authReducer }), // Configuração do Redux com o reducer de autenticação
+    AppRoutingModule,
+    StoreModule.forRoot({ auth: authReducer }),
     SharedSigaeModule,
   ],
-  providers: [AuthGuard], // Define o AuthGuard como provedor
+  providers: [AuthGuard],
 })
 export class AppModule {}

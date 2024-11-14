@@ -20,6 +20,14 @@ const routes: Routes = [
     loadChildren: () =>
       import('./modules/pessoa/pessoa.module').then((p) => p.PessoaModule),
   },
+  {
+    path: 'plano-de-acao',
+    canActivateChild: [AuthGuard],
+    loadChildren: () =>
+      import('./modules/plano-de-acao/plano-de-acao.module').then(
+        (p) => p.PlanoDeAcaoModule
+      ),
+  },
 ];
 
 @NgModule({

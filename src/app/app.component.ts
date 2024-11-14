@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  deveExibirMainMenu = true; // Controla a exibição do componente
+  deveExibirMainMenu = true;
 
   constructor(private router: Router) {}
 
@@ -20,8 +20,6 @@ export class AppComponent {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        // Verifica se a rota inclui o caminho para a página de login
-        // Se a página atual for a de login, o componente app-main-menu não deve ser exibido
         this.deveExibirMainMenu = !event.url.includes('/login');
       });
   }

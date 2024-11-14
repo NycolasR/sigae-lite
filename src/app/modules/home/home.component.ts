@@ -11,7 +11,7 @@ export class HomeComponent {
 
   constructor(private store: Store<{ auth: any }>) {
     this.store.select('auth').subscribe((authState) => {
-      this.isUsuarioLogado = !!authState.token; // Se o token existir, o usuário está logado
+      this.isUsuarioLogado = !!authState.token;
     });
   }
 }
