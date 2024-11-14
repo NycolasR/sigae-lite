@@ -4,6 +4,11 @@ import {
   validarCNPJ,
   validarCPF,
 } from '../../../validadores/documento-validador';
+import {
+  MSG_FORMULARIO_INVALIDO,
+  MSG_PREENCHIMENTO_INCORRETO,
+} from '../../../mensagens/mensagens';
+
 import { MessageService } from 'primeng/api';
 
 @Component({
@@ -68,8 +73,8 @@ export class DadosCadastraisComponent implements OnInit {
     } else {
       this.messageService.add({
         severity: 'error',
-        summary: 'Formulário Inválido',
-        detail: 'Verifique o preenchimento dos campos e tente novamente.',
+        summary: MSG_FORMULARIO_INVALIDO,
+        detail: MSG_PREENCHIMENTO_INCORRETO,
       });
     }
   }
