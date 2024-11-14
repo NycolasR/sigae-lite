@@ -34,7 +34,7 @@ h6 {
 }
 
 input {
-  height: 32px;
+  height: 38px;
   border: 1px solid #ced4da;
 }
 
@@ -50,3 +50,23 @@ input {
   display: flex;
   flex-direction: column;
 }
+
+// Padronizando dropdowns
+.p-dropdown {
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  color: #495057;
+  background-color: #fff;
+  height: 38px;
+
+}
+.p-dropdown .p-dropdown-label {
+  padding: 0;
+}
+
+.label-dropdown {
+  margin-left: 10px;
+};
+

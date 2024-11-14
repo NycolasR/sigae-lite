@@ -9,7 +9,7 @@
     <form id="form-login" [formGroup]="formLogin">
       <div class="p-grid p-fluid">
         <h4 class="m-5 mt-4 text-center">Login</h4>
-        <div class="p-col-12 mx-4 mb-5" style="position: relative">
+        <div class="p-col-12 mx-4 mb-5">
           <p-floatLabel>
             <input pInputText id="email" formControlName="email" />
             <label for="email">E-mail *</label>
@@ -58,21 +58,3 @@
     </form>
   </div>
 </div>
-
-<!-- <form (ngSubmit)="onSubmit()">
-  <input
-    type="text"
-    [(ngModel)]="username"
-    name="username"
-    placeholder="Usuário"
-    required
-  />
-  <input
-    type="password"
-    [(ngModel)]="password"
-    name="password"
-    placeholder="Senha"
-    required
-  />
-  <button type="submit">Login</button>
-</form> -->
