@@ -1,3 +1,108 @@
-<p>
-  dados-endereco works!
-</p>
+<p-toast />
+<p-confirmDialog
+  key="positionDialog"
+  [position]="'center'"
+  rejectButtonStyleClass="p-button-outlined"
+/>
+<div class="form-dados-endereco-content p-grid">
+  <form [formGroup]="formDadosEndereco" (ngSubmit)="salvarDadosEndereco()">
+    <div class="p-grid p-fluid">
+      <div class="row">
+        <div class="form-group col-12 col-sm-6 mb-4">
+          <p-floatLabel>
+            <input
+              pInputText
+              id="endereco-completo-form-dados-endereco"
+              formControlName="enderecoCompleto"
+            />
+            <label for="enderecoCompleto">Endereço completo *</label>
+          </p-floatLabel>
+          <app-mensagem-alerta
+            campo="enderecoCompleto"
+            mensagem="Este campo é obrigatório."
+            tipoAlerta="required"
+            [formulario]="formDadosEndereco"
+          />
+        </div>
+
+        <div class="form-group col-12 col-sm-6 mb-4">
+          <p-floatLabel>
+            <p-inputMask
+              mask="99999-999"
+              id="cep-form-dados-endereco"
+              formControlName="cep"
+            ></p-inputMask>
+            <label for="cep">CEP</label>
+          </p-floatLabel>
+          <app-mensagem-alerta
+            campo="cep"
+            mensagem="Insira um CEP válido."
+            tipoAlerta="cepInvalido"
+            [formulario]="formDadosEndereco"
+          />
+        </div>
+
+        <div class="form-group col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+          <p-floatLabel>
+            <p-dropdown
+              inputId="pais"
+              [options]="paises"
+              formControlName="pais"
+            ></p-dropdown>
+            <label for="pais">País</label>
+          </p-floatLabel>
+        </div>
+
+        <div class="form-group col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+          <p-floatLabel>
+            <p-dropdown
+              inputId="estado"
+              [options]="estados"
+              formControlName="estado"
+            ></p-dropdown>
+            <label for="estado">Estado *</label>
+          </p-floatLabel>
+          <app-mensagem-alerta
+            campo="estado"
+            mensagem="Este campo é obrigatório."
+            tipoAlerta="required"
+            [formulario]="formDadosEndereco"
+          />
+        </div>
+
+        <div class="form-group col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+          <p-floatLabel>
+            <p-dropdown
+              inputId="municipio"
+              [options]="municipios"
+              formControlName="municipio"
+            ></p-dropdown>
+            <label for="municipio">Município *</label>
+          </p-floatLabel>
+          <app-mensagem-alerta
+            campo="municipio"
+            mensagem="Este campo é obrigatório."
+            tipoAlerta="required"
+            [formulario]="formDadosEndereco"
+          />
+        </div>
+
+        <div
+          class="form-group col-12 col-sm-6 col-md-3 mb-4"
+          style="width: 136px"
+        >
+          <button type="submit" class="btn btn-outline-primary">
+            <i class="pi pi-arrow-left ml-2"></i> Anterior
+          </button>
+        </div>
+
+        <div
+          class="form-group col-12 col-sm-6 col-md-3 mb-4"
+          style="width: 107px"
+        >
+          <button type="submit" class="btn btn-primary">Concluir</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

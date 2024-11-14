@@ -30,26 +30,19 @@ export class DadosCadastraisComponent implements OnInit {
   ngOnInit(): void {
     this.buildForm();
 
-    // Habilita/Desabilita CPF e CNPJ dependendo do tipo de pessoa
     this.formDadosCadastrais
       .get('pessoaJuridica')
       ?.valueChanges.subscribe((isJuridica) => {
-        // Alterna flag para esconder o campo de CPF e exibir o campo de CNPJ
         this.isPessoaJuridica = isJuridica;
 
         if (this.isPessoaJuridica) {
-          // Retira os validadores do CPF
           this.formDadosCadastrais.get('cpf')?.clearValidators();
-
-          // Aciona o validador do CNPJ
           this.formDadosCadastrais.get('cnpj')?.setValidators([validarCNPJ()]);
         } else {
-          // Ação inversa nos validadores, já que está sendo exibido o campo de CPF
           this.formDadosCadastrais.get('cnpj')?.clearValidators();
           this.formDadosCadastrais.get('cpf')?.setValidators([validarCPF()]);
         }
 
-        // Sincronizando as alterações nas validações com o formulário
         this.formDadosCadastrais.get('cpf')?.updateValueAndValidity();
         this.formDadosCadastrais.get('cnpj')?.updateValueAndValidity();
       });
@@ -60,7 +53,6 @@ export class DadosCadastraisComponent implements OnInit {
       nome: [null, Validators.required],
       nomeSocial: [null],
       pessoaJuridica: [false],
-      // chamando o validadores personalizados
       cpf: [null, validarCPF()],
       cnpj: [null],
       escola: [null, Validators.required],

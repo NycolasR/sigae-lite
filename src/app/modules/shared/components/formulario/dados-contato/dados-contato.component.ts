@@ -27,31 +27,26 @@ export class DadosContatoComponent implements OnInit {
   buildForm() {
     this.formDadosContato = this.formBuilder.group({
       email: [null, [Validators.required, validarEmail()]],
-      telefones: this.formBuilder.array([this.criarTelefoneControl()]), // Inicia com um telefone
+      telefones: this.formBuilder.array([this.criarTelefoneControl()]),
     });
   }
 
-  // Cria um controle de telefone
   criarTelefoneControl(): FormGroup {
     return this.formBuilder.group({
-      numero: [null, [Validators.pattern('^[0-9]{10,11}$')]], // Exemplo de validação de 10-11 dígitos
+      numero: [null, [Validators.pattern('^[0-9]{10,11}$')]],
     });
   }
 
-  // Getter para facilitar o acesso ao FormArray de telefones no template
   get telefones(): FormArray {
     return this.formDadosContato.get('telefones') as FormArray;
   }
 
-  // Adiciona um novo telefone ao FormArray
   adicionarTelefone(): void {
     this.telefones.push(this.criarTelefoneControl());
   }
 
-  // Remove um telefone do FormArray
   removerTelefone(index: number): void {
     if (this.telefones.length > 1) {
-      // Impede que o último campo seja removido
       this.telefones.removeAt(index);
     }
   }
