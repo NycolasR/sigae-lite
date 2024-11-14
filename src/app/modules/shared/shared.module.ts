@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
+import { TooltipModule } from 'primeng/tooltip';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
@@ -31,6 +32,7 @@ import { MessageService } from 'primeng/api';
     InputMaskModule,
     DropdownModule,
     ToastModule,
+    TooltipModule,
   ],
   exports: [
     MensagemAlertaComponent,
