@@ -6,6 +6,7 @@ import { StepperModule } from 'primeng/stepper';
 
 import { PlanoDeAcaoComponent } from './plano-de-acao.component';
 import { PlanoDeAcaoRoutingModule } from './plano-de-acao.routing.module';
+import { SharedSigaeModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -13,6 +14,7 @@ import { PlanoDeAcaoRoutingModule } from './plano-de-acao.routing.module';
     PlanoDeAcaoRoutingModule,
     ButtonModule,
     StepperModule,
+    SharedSigaeModule,
   ],
   declarations: [PlanoDeAcaoComponent],
 })

@@ -4,7 +4,7 @@ import { MessageService } from 'primeng/api';
 import {
   MSG_FORMULARIO_INVALIDO,
   MSG_PREENCHIMENTO_INCORRETO,
-} from '../../../mensagens/mensagens';
+} from '../../../../mensagens/mensagens';
 
 @Component({
   selector: 'app-dados-endereco',

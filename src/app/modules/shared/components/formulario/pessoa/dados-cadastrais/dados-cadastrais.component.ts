@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
+
 import {
   validarCNPJ,
   validarCPF,
-} from '../../../validadores/documento-validador';
+} from '../../../../validadores/documento-validador';
 import {
   MSG_FORMULARIO_INVALIDO,
   MSG_PREENCHIMENTO_INCORRETO,
-} from '../../../mensagens/mensagens';
-
-import { MessageService } from 'primeng/api';
+} from '../../../../mensagens/mensagens';
 
 @Component({
   selector: 'app-dados-cadastrais',

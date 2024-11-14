@@ -4,8 +4,8 @@ import { MessageService } from 'primeng/api';
 import {
   MSG_FORMULARIO_INVALIDO,
   MSG_PREENCHIMENTO_INCORRETO,
-} from '../../../mensagens/mensagens';
-import { validarEmail } from '../../../validadores/email-validator';
+} from '../../../../mensagens/mensagens';
+import { validarEmail } from '../../../../validadores/email-validator';
 
 @Component({
   selector: 'app-dados-contato',
