@@ -13,6 +13,7 @@ export class Pessoa {
   email: string;
   telefones?: Telefone[];
   endereco?: Endereco;
+  cadastroFinalizado?: boolean;
 
   constructor(data: Partial<Pessoa>) {
     this.id = data.id!;
@@ -25,5 +26,6 @@ export class Pessoa {
     this.email = data.email!;
     this.telefones = data.telefones;
     this.endereco = data.endereco;
+    this.cadastroFinalizado = data.cadastroFinalizado ?? false;
   }
 }

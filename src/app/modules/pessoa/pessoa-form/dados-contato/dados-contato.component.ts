@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { validarEmail } from '../../../shared/validadores/email-validator';
@@ -7,6 +7,9 @@ import {
   MSG_PREENCHIMENTO_INCORRETO,
 } from '../../../shared/mensagens/mensagens';
 import { validarTelefone } from '../../../shared/validadores/telefone-validador';
+import { FormularioService } from '../../../shared/services/formulario/formulario.service';
+import { Pessoa } from '../../../shared/models/pessoa/pessoa';
+import { PessoaService } from '../../../shared/services/pessoa/pessoa.service';
 
 @Component({
   selector: 'app-dados-contato',
@@ -16,9 +19,13 @@ import { validarTelefone } from '../../../shared/validadores/telefone-validador'
 export class DadosContatoComponent implements OnInit {
   formDadosContato: FormGroup = new FormGroup({});
 
+  criouDadosDeContato = output<Pessoa>();
+
   constructor(
-    private formBuilder: FormBuilder,
-    private messageService: MessageService
+    private readonly formBuilder: FormBuilder,
+    private readonly pessoaService: PessoaService,
+    private readonly messageService: MessageService,
+    private readonly formularioService: FormularioService
   ) {}
 
   ngOnInit() {
@@ -34,7 +41,7 @@ export class DadosContatoComponent implements OnInit {
 
   criarTelefoneControl(): FormGroup {
     return this.formBuilder.group({
-      numero: [null, [Validators.required, validarTelefone()]],
+      numero: [null, validarTelefone()],
     });
   }
 
@@ -57,13 +64,14 @@ export class DadosContatoComponent implements OnInit {
   }
 
   salvarDadosContato(): void {
-    if (this.formDadosContato.valid) {
-      console.log(this.formDadosContato.value);
-    } else {
-      this.messageService.add({
-        severity: 'error',
-        summary: MSG_FORMULARIO_INVALIDO,
-        detail: MSG_PREENCHIMENTO_INCORRETO,
+    if (this.formularioService.formularioIsValido(this.formDadosContato)) {
+      this.pessoaService.criar(this.formDadosContato.value).subscribe((res) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Sucesso!',
+          detail: `Pessoa de nome ${res.nome} criada com sucesso!`,
+        });
+        this.criouNovaPessoa.emit(res);
       });
     }
   }

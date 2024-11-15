@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { login } from '../../../store/auth.actions';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { validarEmail } from '../../shared/validadores/email-validator';
+import { FormularioService } from './../../shared/services/formulario/formulario.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private store: Store<{ auth: any }>,
     private readonly router: Router,
-    private readonly formBuilder: FormBuilder
+    private readonly formBuilder: FormBuilder,
+    private readonly formularioService: FormularioService
   ) {
     this.store.select('auth').subscribe((authState) => {
       if (authState.token) {
@@ -36,13 +38,8 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  formularioIsValido(): boolean {
-    this.formLogin.markAllAsTouched();
-    return this.formLogin.valid;
-  }
-
   fazerLogin() {
-    if (this.formularioIsValido()) {
+    if (this.formularioService.formularioIsValido(this.formLogin)) {
       this.store.dispatch(
         login(
           this.formLogin.get('email')?.value,

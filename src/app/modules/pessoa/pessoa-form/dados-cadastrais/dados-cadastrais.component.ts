@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import {
@@ -9,6 +9,9 @@ import {
   MSG_FORMULARIO_INVALIDO,
   MSG_PREENCHIMENTO_INCORRETO,
 } from '../../../shared/mensagens/mensagens';
+import { FormularioService } from '../../../shared/services/formulario/formulario.service';
+import { PessoaService } from '../../../shared/services/pessoa/pessoa.service';
+import { Pessoa } from '../../../shared/models/pessoa/pessoa';
 
 @Component({
   selector: 'app-dados-cadastrais',
@@ -21,9 +24,13 @@ export class DadosCadastraisComponent implements OnInit {
 
   escolas: string[] = ['Escola A', 'Escola B', 'Escola C'];
 
+  criouNovaPessoa = output<Pessoa>();
+
   constructor(
-    private formBuilder: FormBuilder,
-    private messageService: MessageService
+    private readonly formBuilder: FormBuilder,
+    private readonly pessoaService: PessoaService,
+    private readonly messageService: MessageService,
+    private readonly formularioService: FormularioService
   ) {}
 
   ngOnInit(): void {
@@ -59,14 +66,17 @@ export class DadosCadastraisComponent implements OnInit {
   }
 
   salvarDadosCadastrais(): void {
-    if (this.formDadosCadastrais.valid) {
-      console.log(this.formDadosCadastrais.value);
-    } else {
-      this.messageService.add({
-        severity: 'error',
-        summary: MSG_FORMULARIO_INVALIDO,
-        detail: MSG_PREENCHIMENTO_INCORRETO,
-      });
+    if (this.formularioService.formularioIsValido(this.formDadosCadastrais)) {
+      this.pessoaService
+        .criar(this.formDadosCadastrais.value)
+        .subscribe((res) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Sucesso!',
+            detail: `Pessoa de nome ${res.nome} criada com sucesso!`,
+          });
+          this.criouNovaPessoa.emit(res);
+        });
     }
   }
 }
