@@ -22,8 +22,10 @@
         <div class="form-group col-12 col-sm-6 mb-4">
           <p-floatLabel>
             <p-inputMask
-              mask="99999-999"
               id="cep-form-dados-endereco"
+              mask="99999-999"
+              pTooltip="Preencha para completar os demais campos."
+              tooltipPosition="top"
               formControlName="cep"
             ></p-inputMask>
             <label for="cep">CEP</label>
@@ -41,6 +43,7 @@
             <p-dropdown
               inputId="pais"
               [options]="paises"
+              optionLabel="name.common"
               formControlName="pais"
             ></p-dropdown>
             <label for="pais">País</label>
@@ -52,6 +55,7 @@
             <p-dropdown
               inputId="estado"
               [options]="estados"
+              optionLabel="sigla"
               formControlName="estado"
             ></p-dropdown>
             <label for="estado">Estado *</label>
@@ -69,7 +73,14 @@
             <p-dropdown
               inputId="municipio"
               [options]="municipios"
+              optionLabel="nome"
               formControlName="municipio"
+              tooltipPosition="top"
+              [pTooltip]="
+                formDadosEndereco.get('municipio')?.disabled
+                  ? 'Selecione um estado primeiro'
+                  : ''
+              "
             ></p-dropdown>
             <label for="municipio">Município *</label>
           </p-floatLabel>

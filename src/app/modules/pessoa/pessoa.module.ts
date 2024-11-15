@@ -21,6 +21,7 @@ import { PessoaFormComponent } from './pessoa-form/pessoa-form.component';
 import { DadosContatoComponent } from './pessoa-form/dados-contato/dados-contato.component';
 import { DadosEnderecoComponent } from './pessoa-form/dados-endereco/dados-endereco.component';
 import { DadosCadastraisComponent } from './pessoa-form/dados-cadastrais/dados-cadastrais.component';
+import { EnderecoService } from '../shared/services/endereco/endereco.service';
 
 @NgModule({
   imports: [
@@ -47,7 +48,7 @@ import { DadosCadastraisComponent } from './pessoa-form/dados-cadastrais/dados-c
     DadosContatoComponent,
     DadosEnderecoComponent,
   ],
-  providers: [MessageService],
+  providers: [MessageService, EnderecoService],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class PessoaModule {}
