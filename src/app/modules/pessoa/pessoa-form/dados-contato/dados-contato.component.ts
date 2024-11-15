@@ -6,6 +6,7 @@ import {
   MSG_FORMULARIO_INVALIDO,
   MSG_PREENCHIMENTO_INCORRETO,
 } from '../../../shared/mensagens/mensagens';
+import { validarTelefone } from '../../../shared/validadores/telefone-validador';
 
 @Component({
   selector: 'app-dados-contato',
@@ -33,7 +34,7 @@ export class DadosContatoComponent implements OnInit {
 
   criarTelefoneControl(): FormGroup {
     return this.formBuilder.group({
-      numero: [null, [Validators.pattern('^[0-9]{10,11}$')]],
+      numero: [null, [Validators.required, validarTelefone()]],
     });
   }
 
@@ -49,6 +50,10 @@ export class DadosContatoComponent implements OnInit {
     if (this.telefones.length > 1) {
       this.telefones.removeAt(index);
     }
+  }
+
+  getTelefoneFormGroup(index: number): FormGroup {
+    return this.telefones.at(index) as FormGroup;
   }
 
   salvarDadosContato(): void {
