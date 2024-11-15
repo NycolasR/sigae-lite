@@ -5,7 +5,7 @@ export class Municipio {
   nome: string;
   estado: Estado;
 
-  constructor(data: Partial<Entidade>) {
+  constructor(data: Partial<Municipio>) {
     this.id = data.id!;
     this.nome = data.nome!;
     this.estado = data.estado!;

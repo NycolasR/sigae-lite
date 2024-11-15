@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Router } from '@angular/router';
+import { Pessoa } from '../shared/models/pessoa/pessoa';
 
 @Component({
   selector: 'app-pessoa',
@@ -17,7 +18,7 @@ import { Router } from '@angular/router';
   ],
 })
 export class PessoaComponent implements OnInit {
-  pessoas!: any[];
+  pessoas!: Pessoa[];
 
   colunas = [
     {

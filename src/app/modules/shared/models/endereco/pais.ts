@@ -3,7 +3,7 @@ export class Pais {
   nome: string;
   ativo?: boolean;
 
-  constructor(data: Partial<Entidade>) {
+  constructor(data: Partial<Pais>) {
     this.id = data.id!;
     this.nome = data.nome!;
     this.ativo = data.ativo;

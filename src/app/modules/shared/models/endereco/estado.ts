@@ -4,7 +4,7 @@ export class Estado {
   sigla: string;
   siglaRegiao: string;
 
-  constructor(data: Partial<Entidade>) {
+  constructor(data: Partial<Estado>) {
     this.id = data.id!;
     this.nome = data.nome!;
     this.sigla = data.sigla!;
