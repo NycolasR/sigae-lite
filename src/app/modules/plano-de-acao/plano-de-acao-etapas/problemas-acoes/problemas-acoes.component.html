@@ -1,3 +1,18 @@
-<p>
-  problemas-acoes works!
-</p>
+<p-treeTable [value]="data" [tableStyle]="{ 'min-width': '50rem' }">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Descrição</th>
+      <th>Etapa</th>
+      <th>Responsável</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowNode let-data="rowNode?.data">
+    <tr>
+      <td>{{ data?.descricao }}</td>
+      <td>{{ data?.etapa }}</td>
+      <td>{{ data?.responsavel }}</td>
+    </tr>
+  </ng-template>
+</p-treeTable>
+
+<pre>{{ data | json }}</pre>

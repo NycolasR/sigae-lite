@@ -12,6 +12,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputMaskModule } from 'primeng/inputmask';
+import { TreeTableModule } from 'primeng/treetable';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -40,6 +41,7 @@ import { DescricaoObjetivosComponent } from './plano-de-acao-etapas/descricao-ob
     FormsModule,
     ReactiveFormsModule,
     CheckboxModule,
+    TreeTableModule,
   ],
   declarations: [
     PlanoDeAcaoComponent,
