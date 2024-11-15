@@ -53,11 +53,20 @@
         <div class="form-group col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
           <p-floatLabel>
             <p-dropdown
-              inputId="estado"
+              *ngIf="isPaisBrasil"
+              inputId="estado-dropdown"
               [options]="estados"
               optionLabel="sigla"
               formControlName="estado"
             ></p-dropdown>
+
+            <input
+              pInputText
+              id="estado-form-dados-endereco"
+              *ngIf="!isPaisBrasil"
+              formControlName="estado"
+            />
+
             <label for="estado">Estado *</label>
           </p-floatLabel>
           <app-mensagem-alerta
@@ -71,7 +80,8 @@
         <div class="form-group col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
           <p-floatLabel>
             <p-dropdown
-              inputId="municipio"
+              *ngIf="isPaisBrasil"
+              inputId="municipio-dropdown"
               [options]="municipios"
               optionLabel="nome"
               formControlName="municipio"
@@ -82,6 +92,13 @@
                   : ''
               "
             ></p-dropdown>
+
+            <input
+              pInputText
+              id="municipio-form-dados-endereco"
+              *ngIf="!isPaisBrasil"
+              formControlName="municipio"
+            />
             <label for="municipio">Município *</label>
           </p-floatLabel>
           <app-mensagem-alerta

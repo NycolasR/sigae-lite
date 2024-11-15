@@ -21,6 +21,8 @@ import { Municipio } from './../../../shared/models/endereco/municipio';
 export class DadosEnderecoComponent implements OnInit {
   formDadosEndereco: FormGroup = new FormGroup({});
 
+  isPaisBrasil: boolean = false;
+
   paises: Pais[] = [];
   estados: Estado[] = [];
   municipios: Municipio[] = [];
@@ -42,15 +44,20 @@ export class DadosEnderecoComponent implements OnInit {
         this.alterarEstadoCampoMunicipio(estado);
       });
 
-    this.formDadosEndereco.get('cep')?.valueChanges.subscribe((cep) => {
+    this.formDadosEndereco.get('cep')?.valueChanges.subscribe((cep: string) => {
       if (!this.formDadosEndereco.get('cep')?.invalid) {
         this.preencherCamposViaDadosCep(cep);
       }
+    });
+
+    this.formDadosEndereco.get('pais')?.valueChanges.subscribe((pais: Pais) => {
+      this.isPaisBrasil = pais.name.common === 'Brazil';
     });
   }
 
   preencherCamposViaDadosCep(cep: string): void {
     this.enderecoService.consultarCep(cep).subscribe((res: Cep) => {
+      this.setarPaisBrasil();
       this.preencherEndereco(res.logradouro);
       this.selecionarEstado(res.estado);
       this.selecionarMunicipio(res.localidade);
@@ -82,7 +89,25 @@ export class DadosEnderecoComponent implements OnInit {
   }
 
   private selecionarMunicipio(nomeMunicipio: string | undefined) {
-    console.log(this.municipios);
+    setTimeout(() => {
+      if (!nomeMunicipio) {
+        return;
+      }
+      const municipio = this.encontrarMunicipioPorNome(nomeMunicipio);
+
+      if (municipio) {
+        this.formDadosEndereco.get('municipio')?.setValue(municipio);
+      }
+    }, 300);
+  }
+
+  private encontrarMunicipioPorNome(
+    nomeMunicipio: string
+  ): Municipio | undefined {
+    return this.municipios.find(
+      (municipio: Municipio) =>
+        municipio.nome.toLowerCase() === nomeMunicipio.toLowerCase()
+    );
   }
 
   alterarEstadoCampoMunicipio(estado: Estado | null): void {
@@ -113,7 +138,16 @@ export class DadosEnderecoComponent implements OnInit {
   consultarPaises(): void {
     this.enderecoService.consultarPaises().subscribe((res) => {
       this.paises = res;
+      this.setarPaisBrasil();
     });
+  }
+
+  private setarPaisBrasil(): void {
+    const paisBrasil = this.paises.find(
+      (pais: Pais) => pais.name.common === 'Brazil'
+    );
+
+    this.formDadosEndereco.get('pais')?.setValue(paisBrasil);
   }
 
   consultarEstados(): void {
