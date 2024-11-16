@@ -59,11 +59,23 @@ export class PessoaService {
     return of(false);
   }
 
-  obterPessoaEmAndamento(): Observable<Pessoa | null> {
-    return of(this.getPessoaEmAndamentoFromStorage());
+  obterPessoaEmAndamento(): Observable<Pessoa> {
+    let pessoaEmAndamento = this.getPessoaEmAndamentoFromStorage();
+
+    if (!pessoaEmAndamento) {
+      pessoaEmAndamento = new Pessoa({
+        id: this.generateId(),
+        nome: '',
+        email: '',
+        cadastroFinalizado: false,
+      });
+
+      this.savePessoaEmAndamentoToStorage(pessoaEmAndamento);
+    }
+
+    return of(pessoaEmAndamento);
   }
 
-  // USAR ESSE NO PRIMEIRO CADASTRO
   criarPessoaEmAndamento(pessoa: Partial<Pessoa>): Observable<Pessoa | null> {
     const pessoaEmAndamento = this.getPessoaEmAndamentoFromStorage();
     if (pessoaEmAndamento) {
@@ -80,13 +92,19 @@ export class PessoaService {
 
   atualizarPessoaEmAndamento(
     pessoaAtualizada: Partial<Pessoa>
-  ): Observable<Pessoa | null> {
-    const pessoaEmAndamento = this.getPessoaEmAndamentoFromStorage();
+  ): Observable<Pessoa> {
+    let pessoaEmAndamento = this.getPessoaEmAndamentoFromStorage();
+
     if (!pessoaEmAndamento) {
-      return throwError(
-        () => new Error('Nenhuma pessoa em andamento para atualizar.')
-      );
+      pessoaEmAndamento = new Pessoa({
+        ...pessoaAtualizada,
+        id: this.generateId(),
+        cadastroFinalizado: false,
+      });
+      this.savePessoaEmAndamentoToStorage(pessoaEmAndamento);
+      return of(pessoaEmAndamento);
     }
+
     const pessoaAtualizadaFinal = { ...pessoaEmAndamento, ...pessoaAtualizada };
     this.savePessoaEmAndamentoToStorage(pessoaAtualizadaFinal);
     return of(pessoaAtualizadaFinal);

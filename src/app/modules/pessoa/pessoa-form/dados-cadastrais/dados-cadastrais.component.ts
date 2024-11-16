@@ -20,7 +20,8 @@ import { Pessoa } from '../../../shared/models/pessoa/pessoa';
 })
 export class DadosCadastraisComponent implements OnInit {
   formDadosCadastrais: FormGroup = new FormGroup({});
-  isPessoaJuridica: boolean = false;
+
+  pessoa: Pessoa = new Pessoa({});
 
   escolas: string[] = ['Escola A', 'Escola B', 'Escola C'];
 
@@ -34,46 +35,54 @@ export class DadosCadastraisComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.buildForm();
+    this.pessoaService.obterPessoaEmAndamento().subscribe((res: Pessoa) => {
+      this.pessoa = res;
+      this.buildForm(res);
+    });
 
     this.formDadosCadastrais
-      .get('pessoaJuridica')
-      ?.valueChanges.subscribe((isJuridica) => {
-        this.isPessoaJuridica = isJuridica;
-
-        if (this.isPessoaJuridica) {
-          this.formDadosCadastrais.get('cpf')?.clearValidators();
-          this.formDadosCadastrais.get('cnpj')?.setValidators([validarCNPJ()]);
-        } else {
-          this.formDadosCadastrais.get('cnpj')?.clearValidators();
-          this.formDadosCadastrais.get('cpf')?.setValidators([validarCPF()]);
-        }
-
-        this.formDadosCadastrais.get('cpf')?.updateValueAndValidity();
-        this.formDadosCadastrais.get('cnpj')?.updateValueAndValidity();
+      .get('isPessoaJuridica')
+      ?.valueChanges.subscribe((isJuridica: boolean) => {
+        this.alternarCamposCpfCanpj(isJuridica);
       });
   }
 
-  buildForm() {
+  private alternarCamposCpfCanpj(isJuridica: boolean) {
+    if (isJuridica) {
+      console.log('entrei aq');
+      this.formDadosCadastrais.get('cpf')?.clearValidators();
+      this.formDadosCadastrais.get('cpf')?.setValue(null);
+      this.formDadosCadastrais.get('cnpj')?.setValidators([validarCNPJ()]);
+    } else {
+      this.formDadosCadastrais.get('cnpj')?.clearValidators();
+      this.formDadosCadastrais.get('cnpj')?.setValue(null);
+      this.formDadosCadastrais.get('cpf')?.setValidators([validarCPF()]);
+    }
+
+    this.formDadosCadastrais.get('cpf')?.updateValueAndValidity();
+    this.formDadosCadastrais.get('cnpj')?.updateValueAndValidity();
+  }
+
+  buildForm(pessoa: Pessoa) {
     this.formDadosCadastrais = this.formBuilder.group({
-      nome: [null, Validators.required],
-      nomeSocial: [null],
-      pessoaJuridica: [false],
-      cpf: [null, validarCPF()],
-      cnpj: [null],
-      escola: [null, Validators.required],
+      nome: [pessoa.nome, Validators.required],
+      nomeSocial: [pessoa.nomeSocial],
+      isPessoaJuridica: [pessoa.isPessoaJuridica],
+      cpf: [pessoa.cpf, pessoa.isPessoaJuridica ? [] : [validarCPF()]],
+      cnpj: [pessoa.cnpj, pessoa.isPessoaJuridica ? [validarCNPJ()] : []],
+      escola: [pessoa.escola, Validators.required],
     });
   }
 
   salvarDadosCadastrais(): void {
     if (this.formularioService.formularioIsValido(this.formDadosCadastrais)) {
       this.pessoaService
-        .criar(this.formDadosCadastrais.value)
+        .atualizarPessoaEmAndamento(this.formDadosCadastrais.value)
         .subscribe((res) => {
           this.messageService.add({
             severity: 'success',
             summary: 'Sucesso!',
-            detail: `Pessoa de nome ${res.nome} criada com sucesso!`,
+            detail: `Dados da pessoa de nome ${res.nome} salvos com sucesso!`,
           });
           this.criouNovaPessoa.emit(res);
         });

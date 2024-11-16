@@ -65,14 +65,14 @@ export class DadosContatoComponent implements OnInit {
 
   salvarDadosContato(): void {
     if (this.formularioService.formularioIsValido(this.formDadosContato)) {
-      this.pessoaService.criar(this.formDadosContato.value).subscribe((res) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Sucesso!',
-          detail: `Pessoa de nome ${res.nome} criada com sucesso!`,
-        });
-        this.criouNovaPessoa.emit(res);
-      });
+      // this.pessoaService.criar(this.formDadosContato.value).subscribe((res) => {
+      //   this.messageService.add({
+      //     severity: 'success',
+      //     summary: 'Sucesso!',
+      //     detail: `Pessoa de nome ${res.nome} criada com sucesso!`,
+      //   });
+      //   this.criouNovaPessoa.emit(res);
+      // });
     }
   }
 }
