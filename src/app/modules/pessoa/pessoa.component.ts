@@ -72,7 +72,7 @@ export class PessoaComponent implements OnInit {
   }
 
   adicionarPessoa() {
-    this.router.navigate(['/pessoa/adicionar']);
+    this.router.navigate(['/pessoa/formulario/adicionar']);
   }
 
   excluirPessoa(idPessoa: number): void {

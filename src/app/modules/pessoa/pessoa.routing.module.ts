@@ -10,8 +10,17 @@ const routes: Routes = [
     component: PessoaComponent,
   },
   {
-    path: 'adicionar',
-    component: PessoaFormComponent,
+    path: 'formulario',
+    children: [
+      {
+        path: 'adicionar',
+        component: PessoaFormComponent,
+      },
+      {
+        path: 'editar/:idPessoa',
+        component: PessoaFormComponent,
+      },
+    ],
   },
 ];
 
