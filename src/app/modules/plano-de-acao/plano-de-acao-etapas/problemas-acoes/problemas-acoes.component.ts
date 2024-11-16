@@ -42,7 +42,7 @@ export class ProblemasAcoesComponent implements OnInit {
     ];
 
     this.data = this.convertObjetivosToTreeNodes(objetivos);
-    console.log(this.data); // Verifique se as ações estão no lugar correto
+    console.log(this.data);
   }
 
   private convertObjetivosToTreeNodes(objetivos: Objetivo[]): TreeNode[] {

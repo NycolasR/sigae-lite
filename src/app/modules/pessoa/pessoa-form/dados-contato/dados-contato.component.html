@@ -19,7 +19,7 @@
           />
           <app-mensagem-alerta
             campo="email"
-            mensagem="Insira um e-mail válido."
+            mensagem="Deve conter um @ e pelo menos um ponto."
             tipoAlerta="emailInvalido"
             [formulario]="formDadosContato"
           />
@@ -79,7 +79,10 @@
     </div>
     <div class="d-flex">
       <div class="mb-4 mr-4">
-        <button type="submit" class="btn btn-outline-primary">
+        <button
+          (click)="clicouBtnAnterior.emit(true)"
+          class="btn btn-outline-primary"
+        >
           <i class="pi pi-arrow-left mr-2"></i> Anterior
         </button>
       </div>

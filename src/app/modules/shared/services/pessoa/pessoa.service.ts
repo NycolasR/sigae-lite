@@ -21,9 +21,8 @@ export class PessoaService {
   }
 
   listarPessoasCadastradas(): Observable<Pessoa[]> {
-    const pessoas = this.getPessoasFromStorage().filter(
-      (p) => p.cadastroFinalizado
-    );
+    const pessoas =
+      this.getPessoasFromStorage()?.filter((p) => p.cadastroFinalizado) || [];
     return of(pessoas);
   }
 
@@ -36,12 +35,12 @@ export class PessoaService {
 
   atualizar(
     id: number,
-    pessoaAtualizada: Partial<Pessoa>
+    dadosNovos: Partial<Pessoa>
   ): Observable<Pessoa | undefined> {
     const pessoas = this.getPessoasFromStorage();
     const index = pessoas.findIndex((p) => p.id === id && p.cadastroFinalizado);
     if (index !== -1) {
-      pessoas[index] = { ...pessoas[index], ...pessoaAtualizada };
+      pessoas[index] = { ...pessoas[index], ...dadosNovos };
       this.savePessoasToStorage(pessoas);
       return of(pessoas[index]);
     }
@@ -90,14 +89,12 @@ export class PessoaService {
     return of(novaPessoa);
   }
 
-  atualizarPessoaEmAndamento(
-    pessoaAtualizada: Partial<Pessoa>
-  ): Observable<Pessoa> {
+  atualizarPessoaEmAndamento(dadosNovos: Partial<Pessoa>): Observable<Pessoa> {
     let pessoaEmAndamento = this.getPessoaEmAndamentoFromStorage();
 
     if (!pessoaEmAndamento) {
       pessoaEmAndamento = new Pessoa({
-        ...pessoaAtualizada,
+        ...dadosNovos,
         id: this.generateId(),
         cadastroFinalizado: false,
       });
@@ -105,7 +102,7 @@ export class PessoaService {
       return of(pessoaEmAndamento);
     }
 
-    const pessoaAtualizadaFinal = { ...pessoaEmAndamento, ...pessoaAtualizada };
+    const pessoaAtualizadaFinal = { ...pessoaEmAndamento, ...dadosNovos };
     this.savePessoaEmAndamentoToStorage(pessoaAtualizadaFinal);
     return of(pessoaAtualizadaFinal);
   }

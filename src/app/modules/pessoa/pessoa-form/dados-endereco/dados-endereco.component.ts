@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import {
@@ -12,6 +12,11 @@ import { Estado } from '../../../shared/models/endereco/estado';
 import { DropdownFilterOptions } from 'primeng/dropdown';
 import { Cep } from '../../../shared/models/endereco/cep';
 import { Municipio } from './../../../shared/models/endereco/municipio';
+import { Pessoa } from '../../../shared/models/pessoa/pessoa';
+import { PessoaService } from '../../../shared/services/pessoa/pessoa.service';
+import { FormularioService } from '../../../shared/services/formulario/formulario.service';
+import { Endereco } from './../../../shared/models/endereco/endereco';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dados-endereco',
@@ -21,20 +26,31 @@ import { Municipio } from './../../../shared/models/endereco/municipio';
 export class DadosEnderecoComponent implements OnInit {
   formDadosEndereco: FormGroup = new FormGroup({});
 
+  pessoa: Pessoa = new Pessoa({});
+
   isPaisBrasil: boolean = false;
 
   paises: Pais[] = [];
   estados: Estado[] = [];
   municipios: Municipio[] = [];
 
+  clicouBtnAnterior = output<boolean>();
+
   constructor(
+    private readonly router: Router,
     private readonly formBuilder: FormBuilder,
+    private readonly pessoaService: PessoaService,
     private readonly messageService: MessageService,
-    private readonly enderecoService: EnderecoService
+    private readonly enderecoService: EnderecoService,
+    private readonly formularioService: FormularioService
   ) {}
 
   ngOnInit() {
-    this.buildForm();
+    this.pessoaService.obterPessoaEmAndamento().subscribe((res: Pessoa) => {
+      this.pessoa = res;
+      this.buildForm(res.endereco ?? null);
+    });
+
     this.consultarPaises();
     this.consultarEstados();
 
@@ -51,7 +67,30 @@ export class DadosEnderecoComponent implements OnInit {
     });
 
     this.formDadosEndereco.get('pais')?.valueChanges.subscribe((pais: Pais) => {
-      this.isPaisBrasil = pais.name.common === 'Brazil';
+      this.tratarAlteracaoDePais(pais);
+    });
+  }
+
+  private tratarAlteracaoDePais(pais: Pais) {
+    this.isPaisBrasil = pais.name.common === 'Brazil';
+
+    if (!this.isPaisBrasil) {
+      this.formDadosEndereco.get('estado')?.setValue(null);
+      this.formDadosEndereco.get('municipio')?.setValue(null);
+      this.formDadosEndereco.get('municipio')?.enable();
+    }
+  }
+
+  buildForm(endereco: Endereco | null): void {
+    this.formDadosEndereco = this.formBuilder.group({
+      enderecoCompleto: [endereco?.enderecoCompleto, Validators.required],
+      cep: [endereco?.cep, validarCep()],
+      pais: [endereco?.pais],
+      estado: [endereco?.estado, Validators.required],
+      municipio: [
+        { value: endereco?.municipio, disabled: true },
+        Validators.required,
+      ],
     });
   }
 
@@ -156,25 +195,24 @@ export class DadosEnderecoComponent implements OnInit {
     });
   }
 
-  buildForm(): void {
-    this.formDadosEndereco = this.formBuilder.group({
-      enderecoCompleto: [null, Validators.required],
-      cep: [null, validarCep()],
-      pais: [null],
-      estado: [null, Validators.required],
-      municipio: [{ value: null, disabled: true }, Validators.required],
-    });
-  }
-
   salvarDadosEndereco(): void {
-    if (this.formDadosEndereco.valid) {
-      console.log(this.formDadosEndereco.value);
-    } else {
-      this.messageService.add({
-        severity: 'error',
-        summary: MSG_FORMULARIO_INVALIDO,
-        detail: MSG_PREENCHIMENTO_INCORRETO,
-      });
+    if (this.formularioService.formularioIsValido(this.formDadosEndereco)) {
+      this.pessoaService
+        .atualizarPessoaEmAndamento({ endereco: this.formDadosEndereco.value })
+        .subscribe((res) => {
+          if (!this.formDadosEndereco.pristine) {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Sucesso!',
+              detail: `Dados do endereço salvos com sucesso!`,
+            });
+          }
+          this.pessoaService
+            .finalizarCadastroEmAndamento()
+            .subscribe((res: Pessoa | null) => {
+              this.router.navigate(['/pessoa']);
+            });
+        });
     }
   }
 }

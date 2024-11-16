@@ -49,7 +49,6 @@ export class DadosCadastraisComponent implements OnInit {
 
   private alternarCamposCpfCanpj(isJuridica: boolean) {
     if (isJuridica) {
-      console.log('entrei aq');
       this.formDadosCadastrais.get('cpf')?.clearValidators();
       this.formDadosCadastrais.get('cpf')?.setValue(null);
       this.formDadosCadastrais.get('cnpj')?.setValidators([validarCNPJ()]);
@@ -63,7 +62,7 @@ export class DadosCadastraisComponent implements OnInit {
     this.formDadosCadastrais.get('cnpj')?.updateValueAndValidity();
   }
 
-  buildForm(pessoa: Pessoa) {
+  buildForm(pessoa: Pessoa): void {
     this.formDadosCadastrais = this.formBuilder.group({
       nome: [pessoa.nome, Validators.required],
       nomeSocial: [pessoa.nomeSocial],
@@ -79,11 +78,13 @@ export class DadosCadastraisComponent implements OnInit {
       this.pessoaService
         .atualizarPessoaEmAndamento(this.formDadosCadastrais.value)
         .subscribe((res) => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Sucesso!',
-            detail: `Dados da pessoa de nome ${res.nome} salvos com sucesso!`,
-          });
+          if (!this.formDadosCadastrais.pristine) {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Sucesso!',
+              detail: `Dados da pessoa de nome ${res.nome} salvos com sucesso!`,
+            });
+          }
           this.criouNovaPessoa.emit(res);
         });
     }

@@ -10,6 +10,7 @@ import { validarTelefone } from '../../../shared/validadores/telefone-validador'
 import { FormularioService } from '../../../shared/services/formulario/formulario.service';
 import { Pessoa } from '../../../shared/models/pessoa/pessoa';
 import { PessoaService } from '../../../shared/services/pessoa/pessoa.service';
+import { Telefone } from '../../../shared/models/pessoa/telefone';
 
 @Component({
   selector: 'app-dados-contato',
@@ -19,6 +20,9 @@ import { PessoaService } from '../../../shared/services/pessoa/pessoa.service';
 export class DadosContatoComponent implements OnInit {
   formDadosContato: FormGroup = new FormGroup({});
 
+  pessoa: Pessoa = new Pessoa({});
+
+  clicouBtnAnterior = output<boolean>();
   criouDadosDeContato = output<Pessoa>();
 
   constructor(
@@ -29,19 +33,28 @@ export class DadosContatoComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.buildForm();
-  }
-
-  buildForm() {
-    this.formDadosContato = this.formBuilder.group({
-      email: [null, [Validators.required, validarEmail()]],
-      telefones: this.formBuilder.array([this.criarTelefoneControl()]),
+    this.pessoaService.obterPessoaEmAndamento().subscribe((res: Pessoa) => {
+      this.pessoa = res;
+      this.buildForm(res);
     });
   }
 
-  criarTelefoneControl(): FormGroup {
+  buildForm(pessoa: Pessoa): void {
+    this.formDadosContato = this.formBuilder.group({
+      email: [pessoa.email, [Validators.required, validarEmail()]],
+      telefones: this.formBuilder.array(
+        pessoa.telefones && pessoa.telefones.length > 0
+          ? pessoa.telefones.map((telefone) =>
+              this.criarTelefoneControl(telefone.numero)
+            )
+          : [this.criarTelefoneControl()]
+      ),
+    });
+  }
+
+  criarTelefoneControl(numero: string | null = null): FormGroup {
     return this.formBuilder.group({
-      numero: [null, validarTelefone()],
+      numero: [numero, validarTelefone()],
     });
   }
 
@@ -56,6 +69,11 @@ export class DadosContatoComponent implements OnInit {
   removerTelefone(index: number): void {
     if (this.telefones.length > 1) {
       this.telefones.removeAt(index);
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Sucesso!',
+        detail: `Telefone excluído com sucesso!`,
+      });
     }
   }
 
@@ -65,14 +83,25 @@ export class DadosContatoComponent implements OnInit {
 
   salvarDadosContato(): void {
     if (this.formularioService.formularioIsValido(this.formDadosContato)) {
-      // this.pessoaService.criar(this.formDadosContato.value).subscribe((res) => {
-      //   this.messageService.add({
-      //     severity: 'success',
-      //     summary: 'Sucesso!',
-      //     detail: `Pessoa de nome ${res.nome} criada com sucesso!`,
-      //   });
-      //   this.criouNovaPessoa.emit(res);
-      // });
+      const dadosContato = {
+        ...this.formDadosContato.value,
+        telefones: this.formDadosContato.value.telefones.filter(
+          (telefone: Telefone) => telefone.numero
+        ),
+      };
+
+      this.pessoaService
+        .atualizarPessoaEmAndamento(dadosContato)
+        .subscribe((res) => {
+          if (!this.formDadosContato.pristine) {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Sucesso!',
+              detail: `Dados de contato salvos com sucesso!`,
+            });
+          }
+          this.criouDadosDeContato.emit(res);
+        });
     }
   }
 }

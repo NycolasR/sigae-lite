@@ -42,8 +42,11 @@
             <td>{{ pessoa.email ?? "-" }}</td>
             <td>{{ pessoa.escola.nome ?? "-" }}</td>
             <td>
-              {{ pessoa.endereco.municipio.nome }} -
-              {{ pessoa.endereco.estado.sigla }}
+              {{
+                pessoa.endereco?.municipio?.nome || pessoa.endereco?.municipio
+              }}
+              -
+              {{ pessoa.endereco?.estado?.sigla || pessoa.endereco?.estado }}
             </td>
             <td>
               <div class="flex-container">
@@ -54,7 +57,11 @@
                 >
                   <i class="pi pi-pencil"></i>
                 </button>
-                <button pTooltip="Excluir pessoa" tooltipPosition="top">
+                <button
+                  (click)="excluirPessoa(pessoa.id)"
+                  pTooltip="Excluir pessoa"
+                  tooltipPosition="top"
+                >
                   <i class="pi pi-trash"></i>
                 </button>
               </div>

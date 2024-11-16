@@ -113,7 +113,10 @@
           class="form-group col-12 col-sm-6 col-md-3 mb-4"
           style="width: 136px"
         >
-          <button type="submit" class="btn btn-outline-primary">
+          <button
+            (click)="clicouBtnAnterior.emit(true)"
+            class="btn btn-outline-primary"
+          >
             <i class="pi pi-arrow-left ml-2"></i> Anterior
           </button>
         </div>
