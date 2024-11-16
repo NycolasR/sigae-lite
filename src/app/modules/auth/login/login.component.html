@@ -4,7 +4,7 @@
   <div
     id="form-login"
     class="bg-light rounded-3"
-    style="width: 300px; height: 300px"
+    style="width: 300px; height: auto"
   >
     <form id="form-login" [formGroup]="formLogin">
       <div class="p-grid p-fluid">
@@ -22,7 +22,7 @@
           />
           <app-mensagem-alerta
             campo="email"
-            mensagem="Deve conter um @ e pelo menos um ponto."
+            mensagem="Insira um e-mail válido."
             tipoAlerta="emailInvalido"
             [formulario]="formLogin"
           />
@@ -45,7 +45,7 @@
           />
         </div>
 
-        <div class="flex justify-content-center mx-4">
+        <div class="flex justify-content-center mx-4 mb-3">
           <button
             pButton
             pRipple
