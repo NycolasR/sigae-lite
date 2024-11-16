@@ -1,4 +1,4 @@
-import { Component, OnInit, output } from '@angular/core';
+import { Component, input, OnInit, output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import {
@@ -24,15 +24,16 @@ import { Router } from '@angular/router';
   styleUrls: ['./dados-endereco.component.scss'],
 })
 export class DadosEnderecoComponent implements OnInit {
-  formDadosEndereco: FormGroup = new FormGroup({});
-
   pessoa: Pessoa = new Pessoa({});
-
+  modoEdicao: boolean = false;
   isPaisBrasil: boolean = false;
+  formDadosEndereco: FormGroup = new FormGroup({});
 
   paises: Pais[] = [];
   estados: Estado[] = [];
   municipios: Municipio[] = [];
+
+  idPessoa = input(0);
 
   clicouBtnAnterior = output<boolean>();
 
@@ -46,11 +47,8 @@ export class DadosEnderecoComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.pessoaService.obterPessoaEmAndamento().subscribe((res: Pessoa) => {
-      this.pessoa = res;
-      this.buildForm(res.endereco ?? null);
-    });
-
+    this.tratarModoEdicao();
+    this.obterPessoa();
     this.consultarPaises();
     this.consultarEstados();
 
@@ -71,6 +69,30 @@ export class DadosEnderecoComponent implements OnInit {
     });
   }
 
+  private tratarModoEdicao(): void {
+    this.modoEdicao = this.idPessoa() !== 0;
+  }
+
+  private obterPessoa() {
+    const obterPessoa = this.modoEdicao
+      ? () => this.pessoaService.buscarPorId(this.idPessoa())
+      : () => this.pessoaService.obterPessoaEmAndamento();
+
+    obterPessoa().subscribe((res: Pessoa | undefined) => {
+      if (res) {
+        this.pessoa = res;
+
+        if (!!res.endereco) {
+          this.tratarAlteracaoDePais(res.endereco.pais);
+          this.alterarEstadoCampoMunicipio(res.endereco.estado);
+        } else {
+          this.formDadosEndereco.get('municipio')?.disable();
+        }
+        this.buildForm(res.endereco ?? null);
+      }
+    });
+  }
+
   private tratarAlteracaoDePais(pais: Pais) {
     this.isPaisBrasil = pais.name.common === 'Brazil';
 
@@ -78,6 +100,8 @@ export class DadosEnderecoComponent implements OnInit {
       this.formDadosEndereco.get('estado')?.setValue(null);
       this.formDadosEndereco.get('municipio')?.setValue(null);
       this.formDadosEndereco.get('municipio')?.enable();
+    } else {
+      this.formDadosEndereco.get('municipio')?.disable();
     }
   }
 
@@ -85,12 +109,9 @@ export class DadosEnderecoComponent implements OnInit {
     this.formDadosEndereco = this.formBuilder.group({
       enderecoCompleto: [endereco?.enderecoCompleto, Validators.required],
       cep: [endereco?.cep, validarCep()],
-      pais: [endereco?.pais],
+      pais: [endereco?.pais, Validators.required],
       estado: [endereco?.estado, Validators.required],
-      municipio: [
-        { value: endereco?.municipio, disabled: true },
-        Validators.required,
-      ],
+      municipio: [endereco?.municipio, Validators.required],
     });
   }
 
@@ -149,10 +170,13 @@ export class DadosEnderecoComponent implements OnInit {
     );
   }
 
-  alterarEstadoCampoMunicipio(estado: Estado | null): void {
-    if (estado) {
+  alterarEstadoCampoMunicipio(estado: Estado): void {
+    if (!!estado) {
       this.formDadosEndereco.get('municipio')?.enable();
-      this.carregarMunicipios(estado.id);
+
+      if (!!estado.id) {
+        this.carregarMunicipios(estado.id);
+      }
     } else {
       this.desabilitarCampoMunicipio();
     }
@@ -177,7 +201,10 @@ export class DadosEnderecoComponent implements OnInit {
   consultarPaises(): void {
     this.enderecoService.consultarPaises().subscribe((res) => {
       this.paises = res;
-      this.setarPaisBrasil();
+
+      if (!this.modoEdicao) {
+        this.setarPaisBrasil();
+      }
     });
   }
 
@@ -197,9 +224,26 @@ export class DadosEnderecoComponent implements OnInit {
 
   salvarDadosEndereco(): void {
     if (this.formularioService.formularioIsValido(this.formDadosEndereco)) {
-      this.pessoaService
-        .atualizarPessoaEmAndamento({ endereco: this.formDadosEndereco.value })
-        .subscribe((res) => {
+      if (!this.isPaisBrasil) {
+        this.formDadosEndereco.get('estado')?.setValue(
+          new Estado({
+            nome: this.formDadosEndereco.get('estado')?.value,
+          })
+        );
+      }
+
+      const atualizarPessoa = this.modoEdicao
+        ? () =>
+            this.pessoaService.atualizar(this.idPessoa(), {
+              endereco: this.formDadosEndereco.value,
+            })
+        : () =>
+            this.pessoaService.atualizarPessoaEmAndamento({
+              endereco: this.formDadosEndereco.value,
+            });
+
+      atualizarPessoa().subscribe((res) => {
+        if (res) {
           if (!this.formDadosEndereco.pristine) {
             this.messageService.add({
               severity: 'success',
@@ -207,12 +251,12 @@ export class DadosEnderecoComponent implements OnInit {
               detail: `Dados do endereço salvos com sucesso!`,
             });
           }
-          this.pessoaService
-            .finalizarCadastroEmAndamento()
-            .subscribe((res: Pessoa | null) => {
-              this.router.navigate(['/pessoa']);
-            });
-        });
+          if (!this.modoEdicao) {
+            this.pessoaService.finalizarCadastroEmAndamento();
+          }
+          this.router.navigate(['/pessoa']);
+        }
+      });
     }
   }
 }

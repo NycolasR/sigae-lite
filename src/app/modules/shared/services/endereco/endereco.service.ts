@@ -23,7 +23,7 @@ export class EnderecoService {
     return this.http
       .get<Estado[]>(`${this.apiEstados}`)
       .pipe(
-        map((estados) => estados.sort((a, b) => a.sigla.localeCompare(b.sigla)))
+        map((estados) => estados.sort((a, b) => a.nome.localeCompare(b.nome)))
       );
   }
 

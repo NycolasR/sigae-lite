@@ -1,11 +1,11 @@
 export class Estado {
-  id: number;
+  id?: number;
   nome: string;
-  sigla: string;
+  sigla?: string;
 
   constructor(data: Partial<Estado>) {
-    this.id = data.id!;
+    this.id = data.id;
     this.nome = data.nome!;
-    this.sigla = data.sigla!;
+    this.sigla = data.sigla;
   }
 }

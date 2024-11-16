@@ -6,9 +6,9 @@ export class Endereco {
   id: number;
   enderecoCompleto: string;
   cep?: string;
-  estado: Estado | string;
+  estado: Estado;
   municipio: Municipio | string;
-  pais?: Pais;
+  pais: Pais;
 
   constructor(data: Partial<Endereco>) {
     this.id = data.id!;
@@ -16,6 +16,6 @@ export class Endereco {
     this.cep = data.cep;
     this.estado = data.estado!;
     this.municipio = data.municipio!;
-    this.pais = data.pais;
+    this.pais = data.pais!;
   }
 }

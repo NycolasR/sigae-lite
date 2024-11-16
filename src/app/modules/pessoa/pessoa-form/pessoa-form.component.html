@@ -11,7 +11,8 @@
         >
           <div class="flex flex-column h-12rem">
             <app-dados-cadastrais
-              (criouNovaPessoa)="nextCallback.emit()"
+              [idPessoa]="idPessoa"
+              (salvouDadosCadastrais)="nextCallback.emit()"
             ></app-dados-cadastrais>
           </div>
         </ng-template>
@@ -25,8 +26,9 @@
         >
           <div class="flex flex-column h-12rem">
             <app-dados-contato
+              [idPessoa]="idPessoa"
               (clicouBtnAnterior)="prevCallback.emit()"
-              (criouDadosDeContato)="nextCallback.emit()"
+              (salvouDadosDeContato)="nextCallback.emit()"
             ></app-dados-contato>
           </div>
         </ng-template>
@@ -39,6 +41,7 @@
         >
           <div class="flex flex-column h-12rem">
             <app-dados-endereco
+              [idPessoa]="idPessoa"
               (clicouBtnAnterior)="prevCallback.emit()"
             ></app-dados-endereco>
           </div>

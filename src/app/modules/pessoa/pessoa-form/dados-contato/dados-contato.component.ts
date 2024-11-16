@@ -1,4 +1,4 @@
-import { Component, OnInit, output } from '@angular/core';
+import { Component, input, OnInit, output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { validarEmail } from '../../../shared/validadores/email-validator';
@@ -18,12 +18,14 @@ import { Telefone } from '../../../shared/models/pessoa/telefone';
   styleUrls: ['./dados-contato.component.scss'],
 })
 export class DadosContatoComponent implements OnInit {
+  pessoa: Pessoa = new Pessoa({});
+  modoEdicao: boolean = false;
   formDadosContato: FormGroup = new FormGroup({});
 
-  pessoa: Pessoa = new Pessoa({});
+  idPessoa = input(0);
 
   clicouBtnAnterior = output<boolean>();
-  criouDadosDeContato = output<Pessoa>();
+  salvouDadosDeContato = output<Pessoa>();
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -33,9 +35,24 @@ export class DadosContatoComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.pessoaService.obterPessoaEmAndamento().subscribe((res: Pessoa) => {
-      this.pessoa = res;
-      this.buildForm(res);
+    this.tratarModoEdicao();
+    this.obterPessoa();
+  }
+
+  private tratarModoEdicao(): void {
+    this.modoEdicao = this.idPessoa() !== 0;
+  }
+
+  private obterPessoa() {
+    const obterPessoa = this.modoEdicao
+      ? () => this.pessoaService.buscarPorId(this.idPessoa())
+      : () => this.pessoaService.obterPessoaEmAndamento();
+
+    obterPessoa().subscribe((res: Pessoa | undefined) => {
+      if (res) {
+        this.pessoa = res;
+        this.buildForm(res);
+      }
     });
   }
 
@@ -89,10 +106,12 @@ export class DadosContatoComponent implements OnInit {
           (telefone: Telefone) => telefone.numero
         ),
       };
+      const atualizarPessoa = this.modoEdicao
+        ? () => this.pessoaService.atualizar(this.idPessoa(), dadosContato)
+        : () => this.pessoaService.atualizarPessoaEmAndamento(dadosContato);
 
-      this.pessoaService
-        .atualizarPessoaEmAndamento(dadosContato)
-        .subscribe((res) => {
+      atualizarPessoa().subscribe((res) => {
+        if (res) {
           if (!this.formDadosContato.pristine) {
             this.messageService.add({
               severity: 'success',
@@ -100,8 +119,9 @@ export class DadosContatoComponent implements OnInit {
               detail: `Dados de contato salvos com sucesso!`,
             });
           }
-          this.criouDadosDeContato.emit(res);
-        });
+          this.salvouDadosDeContato.emit(res);
+        }
+      });
     }
   }
 }

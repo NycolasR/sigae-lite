@@ -1,4 +1,4 @@
-import { Component, OnInit, output } from '@angular/core';
+import { Component, input, OnInit, output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import {
@@ -12,6 +12,7 @@ import {
 import { FormularioService } from '../../../shared/services/formulario/formulario.service';
 import { PessoaService } from '../../../shared/services/pessoa/pessoa.service';
 import { Pessoa } from '../../../shared/models/pessoa/pessoa';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dados-cadastrais',
@@ -19,15 +20,17 @@ import { Pessoa } from '../../../shared/models/pessoa/pessoa';
   styleUrls: ['./dados-cadastrais.component.scss'],
 })
 export class DadosCadastraisComponent implements OnInit {
+  modoEdicao: boolean = false;
+  pessoa: Pessoa = new Pessoa({});
+  escolas: string[] = ['Escola A', 'Escola B', 'Escola C'];
   formDadosCadastrais: FormGroup = new FormGroup({});
 
-  pessoa: Pessoa = new Pessoa({});
+  idPessoa = input(0);
 
-  escolas: string[] = ['Escola A', 'Escola B', 'Escola C'];
-
-  criouNovaPessoa = output<Pessoa>();
+  salvouDadosCadastrais = output<Pessoa>();
 
   constructor(
+    private readonly router: Router,
     private readonly formBuilder: FormBuilder,
     private readonly pessoaService: PessoaService,
     private readonly messageService: MessageService,
@@ -35,16 +38,38 @@ export class DadosCadastraisComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.pessoaService.obterPessoaEmAndamento().subscribe((res: Pessoa) => {
-      this.pessoa = res;
-      this.buildForm(res);
-    });
+    this.tratarModoEdicao();
+    this.obterPessoa();
 
     this.formDadosCadastrais
       .get('isPessoaJuridica')
       ?.valueChanges.subscribe((isJuridica: boolean) => {
         this.alternarCamposCpfCanpj(isJuridica);
       });
+  }
+
+  private tratarModoEdicao(): void {
+    this.modoEdicao = this.idPessoa() !== 0;
+  }
+
+  private obterPessoa() {
+    const obterPessoa = this.modoEdicao
+      ? () => this.pessoaService.buscarPorId(this.idPessoa())
+      : () => this.pessoaService.obterPessoaEmAndamento();
+
+    obterPessoa().subscribe((res: Pessoa | undefined) => {
+      if (res) {
+        this.pessoa = res;
+        this.buildForm(res);
+      } else {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Houve um erro',
+          detail: `Não foi possível obter a pessoa com o ID informado.`,
+        });
+        this.router.navigate(['/pessoa']);
+      }
+    });
   }
 
   private alternarCamposCpfCanpj(isJuridica: boolean) {
@@ -75,9 +100,19 @@ export class DadosCadastraisComponent implements OnInit {
 
   salvarDadosCadastrais(): void {
     if (this.formularioService.formularioIsValido(this.formDadosCadastrais)) {
-      this.pessoaService
-        .atualizarPessoaEmAndamento(this.formDadosCadastrais.value)
-        .subscribe((res) => {
+      const atualizarPessoa = this.modoEdicao
+        ? () =>
+            this.pessoaService.atualizar(
+              this.idPessoa(),
+              this.formDadosCadastrais.value
+            )
+        : () =>
+            this.pessoaService.atualizarPessoaEmAndamento(
+              this.formDadosCadastrais.value
+            );
+
+      atualizarPessoa().subscribe((res) => {
+        if (res) {
           if (!this.formDadosCadastrais.pristine) {
             this.messageService.add({
               severity: 'success',
@@ -85,8 +120,9 @@ export class DadosCadastraisComponent implements OnInit {
               detail: `Dados da pessoa de nome ${res.nome} salvos com sucesso!`,
             });
           }
-          this.criouNovaPessoa.emit(res);
-        });
+          this.salvouDadosCadastrais.emit(res);
+        }
+      });
     }
   }
 }

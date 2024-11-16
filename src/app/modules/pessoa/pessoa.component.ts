@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { Router } from '@angular/router';
 import { Pessoa } from '../shared/models/pessoa/pessoa';
 import { PessoaService } from '../shared/services/pessoa/pessoa.service';
 import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pessoa',
@@ -73,6 +73,10 @@ export class PessoaComponent implements OnInit {
 
   adicionarPessoa() {
     this.router.navigate(['/pessoa/formulario/adicionar']);
+  }
+
+  editarPessoa(idPessoa: number) {
+    this.router.navigate([`/pessoa/formulario/editar/${idPessoa}`]);
   }
 
   excluirPessoa(idPessoa: number): void {

@@ -46,8 +46,14 @@
               optionLabel="name.common"
               formControlName="pais"
             ></p-dropdown>
-            <label for="pais">País</label>
+            <label for="pais">País *</label>
           </p-floatLabel>
+          <app-mensagem-alerta
+            campo="pais"
+            mensagem="Este campo é obrigatório."
+            tipoAlerta="required"
+            [formulario]="formDadosEndereco"
+          />
         </div>
 
         <div class="form-group col-12 col-sm-6 col-md-4 col-lg-3 mb-4">

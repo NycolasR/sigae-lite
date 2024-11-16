@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-pessoa-form',
@@ -6,7 +7,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./pessoa-form.component.scss'],
 })
 export class PessoaFormComponent implements OnInit {
-  constructor() {}
+  constructor(private readonly route: ActivatedRoute) {}
 
-  ngOnInit() {}
+  idPessoa: number = 0;
+
+  ngOnInit() {
+    this.route.paramMap.subscribe((params) => {
+      const id = params.get('idPessoa');
+      if (id) {
+        this.idPessoa = +id;
+      }
+    });
+  }
 }
