@@ -1,18 +1,60 @@
-<p-treeTable [value]="data" [tableStyle]="{ 'min-width': '50rem' }">
-  <ng-template pTemplate="header">
-    <tr>
-      <th>Descrição</th>
-      <th>Etapa</th>
-      <th>Responsável</th>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-rowNode let-data="rowNode?.data">
-    <tr>
-      <td>{{ data?.descricao }}</td>
-      <td>{{ data?.etapa }}</td>
-      <td>{{ data?.responsavel }}</td>
-    </tr>
-  </ng-template>
-</p-treeTable>
+<div class="border">
+  <p-treeTable
+    [value]="data"
+    [scrollable]="true"
+    [tableStyle]="{ 'min-width': '50rem' }"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Descrição</th>
+        <th>Etapa</th>
+        <th>Responsável</th>
+        <th>Opções</th>
+      </tr>
+    </ng-template>
+    <ng-template
+      pTemplate="body"
+      let-rowNode
+      let-rowData="rowData"
+      let-rowIndex="rowIndex"
+    >
+      <tr [ttRow]="rowNode">
+        <td>
+          <p-treeTableToggler [rowNode]="rowNode" />
+          {{ rowData.descricao }}
+        </td>
+        <td>{{ rowData.etapa }}</td>
+        <td>{{ rowData.responsavel }}</td>
 
-<pre>{{ data | json }}</pre>
+        <td>
+          <div class="flex-container">
+            <button
+              class="mr-3"
+              *ngIf="getNivel(rowNode) === 1"
+              pTooltip="Adicionar ação"
+              tooltipPosition="top"
+              (click)="abrirModalAcoes()"
+            >
+              <i class="pi pi-plus"></i>
+            </button>
+            <button
+              class="mr-3"
+              *ngIf="getNivel(rowNode) === 2"
+              pTooltip="Editar ação"
+              tooltipPosition="top"
+            >
+              <i class="pi pi-pencil"></i>
+            </button>
+            <button
+              *ngIf="getNivel(rowNode) === 2"
+              pTooltip="Excluir ação"
+              tooltipPosition="top"
+            >
+              <i class="pi pi-trash"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-treeTable>
+</div>

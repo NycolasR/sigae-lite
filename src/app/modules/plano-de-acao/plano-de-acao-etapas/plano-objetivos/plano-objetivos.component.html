@@ -47,29 +47,6 @@
                 <label for="objetivo-{{ i }}">Objetivo {{ i + 1 }}</label>
               </p-floatLabel>
             </div>
-
-            <div class="d-flex" style="width: 60px; justify-content: center">
-              <button
-                type="button"
-                class="btn p-0 me-2"
-                *ngIf="objetivos.length > 1"
-                (click)="removerObjetivo(i)"
-                pTooltip="Excluir objetivo"
-                tooltipPosition="top"
-              >
-                <i class="pi pi-trash"></i>
-              </button>
-              <button
-                type="button"
-                class="btn p-0"
-                *ngIf="i === objetivos.length - 1"
-                (click)="adicionarObjetivo()"
-                pTooltip="Adicionar objetivo"
-                tooltipPosition="top"
-              >
-                <i class="pi pi-plus"></i>
-              </button>
-            </div>
           </div>
         </div>
       </div>

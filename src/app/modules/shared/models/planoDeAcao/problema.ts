@@ -10,7 +10,7 @@ export class Problema {
   resultado?: string;
   prioridade?: boolean;
   categoria?: Categoria;
-  acoes?: Acao[];
+  acoes: Acao[];
 
   constructor(dados: Partial<Problema>) {
     this.id = dados.id ?? 0;
@@ -20,5 +20,6 @@ export class Problema {
     this.resultado = dados.resultado;
     this.prioridade = dados.prioridade ?? false;
     this.categoria = dados.categoria;
+    this.acoes = dados.acoes ?? [];
   }
 }

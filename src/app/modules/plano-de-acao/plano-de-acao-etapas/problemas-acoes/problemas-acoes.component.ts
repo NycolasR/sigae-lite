@@ -1,17 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Objetivo } from '../../../shared/models/planoDeAcao/objetivo';
-import { TreeNode } from 'primeng/api';
+import { MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { Problema } from '../../../shared/models/planoDeAcao/problema';
 import { Acao } from '../../../shared/models/planoDeAcao/acao';
 import { Pessoa } from '../../../shared/models/pessoa/pessoa';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { ModalAcoesComponent } from './modal-acoes/modal-acoes.component';
 
 @Component({
   selector: 'app-problemas-acoes',
   templateUrl: './problemas-acoes.component.html',
   styleUrls: ['./problemas-acoes.component.scss'],
 })
-export class ProblemasAcoesComponent implements OnInit {
+export class ProblemasAcoesComponent implements OnInit, OnDestroy {
   data: TreeNode[] = [];
+  ref: DynamicDialogRef | undefined;
+
+  constructor(
+    private readonly dialogService: DialogService,
+    private readonly messageService: MessageService
+  ) {}
 
   ngOnInit() {
     const objetivos: Objetivo[] = [
@@ -42,7 +50,36 @@ export class ProblemasAcoesComponent implements OnInit {
     ];
 
     this.data = this.convertObjetivosToTreeNodes(objetivos);
-    console.log(this.data);
+  }
+
+  ngOnDestroy(): void {
+    if (this.ref) {
+      this.ref.close();
+    }
+  }
+
+  abrirModalAcoes() {
+    this.ref = this.dialogService.open(ModalAcoesComponent, {
+      header: 'Criar ação',
+      width: '50%',
+      data: {
+        idAcao: 1,
+        idProblema: 2,
+        idObjetivo: 3,
+      },
+    });
+  }
+
+  getNivel(rowNode: TreeNode): number {
+    let nivel = 0;
+    let currentNode = rowNode;
+
+    while (currentNode.parent) {
+      nivel++;
+      currentNode = currentNode.parent;
+    }
+
+    return nivel;
   }
 
   private convertObjetivosToTreeNodes(objetivos: Objetivo[]): TreeNode[] {
@@ -63,11 +100,11 @@ export class ProblemasAcoesComponent implements OnInit {
             problema.acoes?.map((acao) => ({
               data: {
                 descricao: acao.descricao,
-                etapa: problema.etapa?.descricao ?? '-', // Herdar etapa do problema
-                responsavel: acao.responsavel?.nome ?? '-', // Nome do responsável
+                etapa: problema.etapa?.descricao ?? '-',
+                responsavel: acao.responsavel?.nome ?? '-',
               },
-            })) ?? [], // Garante um array vazio se não houver ações
-        })) ?? [], // Garante um array vazio se não houver problemas
+            })) ?? [],
+        })) ?? [],
     }));
   }
 }

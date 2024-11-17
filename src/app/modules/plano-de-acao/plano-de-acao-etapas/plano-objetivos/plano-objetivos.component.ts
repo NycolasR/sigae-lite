@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PlanoService } from './../../../shared/services/plano/plano.service';
 
 @Component({
   selector: 'app-plano-objetivos',
@@ -9,7 +10,10 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class PlanoObjetivosComponent implements OnInit {
   formPlanoObjetivos: FormGroup = new FormGroup({});
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private readonly formBuilder: FormBuilder,
+    private readonly planoService: PlanoService
+  ) {}
 
   ngOnInit() {
     this.buildForm();
@@ -31,16 +35,6 @@ export class PlanoObjetivosComponent implements OnInit {
 
   get objetivos(): FormArray {
     return this.formPlanoObjetivos.get('objetivos') as FormArray;
-  }
-
-  adicionarObjetivo(): void {
-    this.objetivos.push(this.criarObjetivoControl());
-  }
-
-  removerObjetivo(index: number): void {
-    if (this.objetivos.length > 1) {
-      this.objetivos.removeAt(index);
-    }
   }
 
   salvarDadosContato(): void {
