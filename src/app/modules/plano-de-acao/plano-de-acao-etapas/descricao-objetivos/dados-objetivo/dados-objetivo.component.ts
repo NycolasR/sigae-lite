@@ -104,6 +104,7 @@ export class DadosObjetivoComponent implements OnInit {
           if (!!res) {
             this.objetivo = res;
             this.problemas = res.problemas || [];
+            this.formProblema.reset();
           }
         });
     }

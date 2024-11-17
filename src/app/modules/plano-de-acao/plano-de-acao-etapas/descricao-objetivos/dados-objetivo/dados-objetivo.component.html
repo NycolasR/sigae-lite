@@ -129,8 +129,8 @@
       <ng-template pTemplate="body" let-problema let-rowIndex="rowIndex">
         <tr>
           <td>{{ problema.descricaoProblema }}</td>
-          <td>{{ problema.etapa.descricao ?? "-" }}</td>
-          <td>{{ problema.possuiCausa ?? "-" }}</td>
+          <td>{{ problema.etapa?.descricao ?? "-" }}</td>
+          <td>{{ problema.possuiCausa ? "Sim" : "Não" }}</td>
           <td>{{ problema.resultado ?? "-" }}</td>
           <td>{{ problema.prioridade ?? "-" }}</td>
           <td>{{ problema.categoria.descricao ?? "-" }}</td>

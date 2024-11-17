@@ -15,7 +15,7 @@ export class PlanoObjetivosComponent implements OnInit {
   planoDeAcao: PlanoDeAcao = new PlanoDeAcao({});
   formPlanoObjetivos: FormGroup = new FormGroup({});
 
-  salvouPlanoObjetivos = output<PlanoDeAcao>();
+  podeAvancar = output<boolean>();
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -117,32 +117,58 @@ export class PlanoObjetivosComponent implements OnInit {
     );
   }
 
+  private possuiObjetosSelecionados() {
+    const objetivosSelecionados = this.getObjetivosSelecionados();
+
+    if (objetivosSelecionados.length === 0) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro!',
+        detail: 'Selecione pelo menos um objetivo antes de salvar.',
+      });
+      return true;
+    }
+    return false;
+  }
+
   salvarDadosContato(): void {
     if (this.formularioService.formularioIsValido(this.formPlanoObjetivos)) {
-      const objetivosSelecionados = this.getObjetivosSelecionados();
+      if (!this.possuiObjetosSelecionados()) {
+        if (!this.formPlanoObjetivos.pristine) {
+          this.planoService.obterPlano().subscribe((res: PlanoDeAcao) => {
+            const objetivosMesclados = this.prepararObjetivosMesclados(res);
 
-      if (objetivosSelecionados.length === 0) {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erro!',
-          detail: 'Selecione pelo menos um objetivo antes de salvar.',
-        });
-        return;
+            const planoAtualizado: PlanoDeAcao = this.formPlanoObjetivos.value;
+            planoAtualizado.objetivos = objetivosMesclados;
+
+            this.planoService
+              .atualizarPlano(this.formPlanoObjetivos.value)
+              .subscribe((planoAtualizado: PlanoDeAcao) => {
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Sucesso!',
+                  detail: 'Plano e objetivo(s) salvos com sucesso!',
+                });
+              });
+          });
+        }
+        this.podeAvancar.emit(true);
       }
-
-      this.planoService
-        .atualizarPlano(this.formPlanoObjetivos.value)
-        .subscribe((res: PlanoDeAcao) => {
-          if (!this.formPlanoObjetivos.pristine) {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Sucesso!',
-              detail: 'Plano e objetivo(s) salvos com sucesso!',
-            });
-          }
-
-          this.salvouPlanoObjetivos.emit(res);
-        });
     }
+  }
+
+  private prepararObjetivosMesclados(res: PlanoDeAcao) {
+    const objetivosAtuais = res.objetivos;
+    const objetivosFormulario = this.formPlanoObjetivos.get('objetivos')?.value;
+
+    const objetivosMesclados = objetivosAtuais.map((objetivoAtual) => {
+      const objetivoFormulario = objetivosFormulario.find(
+        (obj: any) => obj.id === objetivoAtual.id
+      );
+      return objetivoFormulario
+        ? { ...objetivoAtual, ...objetivoFormulario }
+        : objetivoAtual;
+    });
+    return objetivosMesclados;
   }
 }
