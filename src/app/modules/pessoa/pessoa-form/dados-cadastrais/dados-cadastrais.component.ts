@@ -20,9 +20,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./dados-cadastrais.component.scss'],
 })
 export class DadosCadastraisComponent implements OnInit {
-  modoEdicao: boolean = false;
   pessoa: Pessoa = new Pessoa({});
   escolas: string[] = ['Escola A', 'Escola B', 'Escola C'];
+  modoEdicao: boolean = false;
   formDadosCadastrais: FormGroup = new FormGroup({});
 
   idPessoa = input(0);

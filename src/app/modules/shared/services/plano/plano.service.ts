@@ -37,7 +37,7 @@ export class PlanoService {
   private inicializarObjetivos(): Objetivo[] {
     const objetivos: Objetivo[] = [];
     for (let i = 1; i <= 6; i++) {
-      objetivos.push(new Objetivo({ id: i, nome: `Objetivo ${i}` }));
+      objetivos.push(new Objetivo({ id: i }));
     }
     return objetivos;
   }
@@ -60,7 +60,7 @@ export class PlanoService {
     const planoAtualizadoCompleto = new PlanoDeAcao({
       ...planoExistente,
       ...planoAtualizado,
-      objetivos: planoExistente.objetivos, // Mantém os objetivos existentes
+      objetivos: planoAtualizado.objetivos,
     });
 
     this.savePlanoToStorage(planoAtualizadoCompleto);
@@ -72,7 +72,6 @@ export class PlanoService {
     return of(true);
   }
 
-  // Métodos para Problemas
   adicionarProblema(
     idObjetivo: number,
     problema: Problema
@@ -135,7 +134,6 @@ export class PlanoService {
     return of(true);
   }
 
-  // Métodos para Ações
   adicionarAcao(
     idObjetivo: number,
     idProblema: number,

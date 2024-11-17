@@ -7,15 +7,21 @@
           <p-floatLabel>
             <input
               pInputText
-              id="plano-form-dados-contato"
-              formControlName="plano"
+              id="descricao-plano-form-dados-contato"
+              formControlName="descricao"
             />
-            <label for="plano">Descrição do plano *</label>
+            <label for="descricao">Descrição do plano *</label>
           </p-floatLabel>
           <app-mensagem-alerta
-            campo="plano"
+            campo="descricao"
             mensagem="Este campo é obrigatório."
             tipoAlerta="required"
+            [formulario]="formPlanoObjetivos"
+          />
+          <app-mensagem-alerta
+            campo="descricao"
+            mensagem="Limite de 25 caracteres."
+            tipoAlerta="maxlength"
             [formulario]="formPlanoObjetivos"
           />
         </div>
@@ -32,8 +38,8 @@
           >
             <input
               type="checkbox"
-              id="objetivoSelecionado"
-              formControlName="objetivoSelecionado"
+              id="selecionado-{{ i }}"
+              formControlName="selecionado"
               class="form-check-input checkbox-personalizado-maior mr-2"
             />
 
@@ -41,11 +47,30 @@
               <p-floatLabel>
                 <input
                   pInputText
-                  id="objetivo-{{ i }}"
-                  formControlName="objetivo"
+                  id="objetivo-nome-{{ i }}"
+                  formControlName="nome"
+                  [class.is-invalid]="possuiErro('nome', i)"
                 />
-                <label for="objetivo-{{ i }}">Objetivo {{ i + 1 }}</label>
+                <label for="objetivo-nome-{{ i }}">
+                  Objetivo {{ i + 1 }}
+                  <span *ngIf="isRequired('nome', i)"> *</span>
+                </label>
               </p-floatLabel>
+
+              <div
+                *ngIf="possuiErroEspecifico('nome', 'required', 'objetivos', i)"
+                class="text-danger"
+              >
+                <p class="mensagem-erro">Este campo é obrigatório.</p>
+              </div>
+              <div
+                *ngIf="
+                  possuiErroEspecifico('nome', 'maxlength', 'objetivos', i)
+                "
+                class="text-danger"
+              >
+                <p class="mensagem-erro">Limite de de 20 caracteres.</p>
+              </div>
             </div>
           </div>
         </div>

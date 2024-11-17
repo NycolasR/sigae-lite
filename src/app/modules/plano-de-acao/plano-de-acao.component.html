@@ -10,15 +10,9 @@
           let-index="index"
         >
           <div class="flex flex-column h-12rem">
-            <app-plano-objetivos></app-plano-objetivos>
-          </div>
-          <div class="flex pt-4 justify-content-end">
-            <p-button
-              label="Next"
-              icon="pi pi-arrow-right"
-              iconPos="right"
-              (onClick)="nextCallback.emit()"
-            />
+            <app-plano-objetivos
+              (salvouPlanoObjetivos)="nextCallback.emit()"
+            ></app-plano-objetivos>
           </div>
         </ng-template>
       </p-stepperPanel>
