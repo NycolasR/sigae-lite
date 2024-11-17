@@ -1,4 +1,10 @@
-<p-carousel [value]="objetivos" [numVisible]="1" [numScroll]="1">
+<p-carousel
+  [value]="objetivos"
+  [numVisible]="1"
+  [numScroll]="1"
+  [ariaHidden]="false"
+  aria-hidden="false"
+>
   <ng-template let-objetivo pTemplate="objetivo">
     <div class="me-3 p-1">
       <app-dados-objetivo [idObjetivo]="objetivo.id"></app-dados-objetivo>
@@ -16,7 +22,11 @@
       </div>
 
       <div class="mb-4">
-        <button type="submit" class="btn btn-primary">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="avancarParaAcoes()"
+        >
           Próximo <i class="pi pi-arrow-right ml-2"></i>
         </button>
       </div>

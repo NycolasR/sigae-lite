@@ -3,7 +3,7 @@
     <div class="p-grid p-fluid">
       <div class="row">
         <div class="form-group col-12 col-md-6 mb-4">
-          <h3 class="mb-3">Plano</h3>
+          <h3 class="mb-4">Plano</h3>
           <p-floatLabel>
             <input
               pInputText
@@ -30,7 +30,7 @@
     <div formArrayName="objetivos" class="p-grid p-fluid">
       <div class="row">
         <div class="col-12 col-md-6">
-          <h4 class="mb-3">Objetivos</h4>
+          <h4 class="mb-4">Objetivos</h4>
           <div
             *ngFor="let objetivo of objetivos.controls; let i = index"
             [formGroupName]="i"
