@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 
 import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
 import { RippleModule } from 'primeng/ripple';
 import { StepperModule } from 'primeng/stepper';
 import { TooltipModule } from 'primeng/tooltip';
@@ -15,6 +16,12 @@ import { InputMaskModule } from 'primeng/inputmask';
 import { TreeTableModule } from 'primeng/treetable';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  DynamicDialogModule,
+  DialogService,
+  DynamicDialogConfig,
+  DynamicDialogRef,
+} from 'primeng/dynamicdialog';
 
 import { SharedSigaeModule } from '../shared/shared.module';
 import { PlanoDeAcaoComponent } from './plano-de-acao.component';
@@ -23,6 +30,7 @@ import { PlanoObjetivosComponent } from './plano-de-acao-etapas/plano-objetivos/
 import { ProblemasAcoesComponent } from './plano-de-acao-etapas/problemas-acoes/problemas-acoes.component';
 import { PlanoDeAcaoRoutingModule } from './plano-de-acao.routing.module';
 import { DescricaoObjetivosComponent } from './plano-de-acao-etapas/descricao-objetivos/descricao-objetivos.component';
+import { ModalAcoesComponent } from './plano-de-acao-etapas/problemas-acoes/modal-acoes/modal-acoes.component';
 
 @NgModule({
   imports: [
@@ -42,6 +50,8 @@ import { DescricaoObjetivosComponent } from './plano-de-acao-etapas/descricao-ob
     ReactiveFormsModule,
     CheckboxModule,
     TreeTableModule,
+    DialogModule,
+    DynamicDialogModule,
   ],
   declarations: [
     PlanoDeAcaoComponent,
@@ -49,7 +59,13 @@ import { DescricaoObjetivosComponent } from './plano-de-acao-etapas/descricao-ob
     DescricaoObjetivosComponent,
     ProblemasAcoesComponent,
     DadosObjetivoComponent,
+    ModalAcoesComponent,
   ],
-  providers: [MessageService],
+  providers: [
+    MessageService,
+    DialogService,
+    DynamicDialogConfig,
+    DynamicDialogRef,
+  ],
 })
 export class PlanoDeAcaoModule {}

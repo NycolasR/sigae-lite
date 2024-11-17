@@ -1,0 +1,42 @@
+<form [formGroup]="formModalAcoes" (ngSubmit)="salvarDadosAcao()">
+  <div class="p-grid p-fluid">
+    <div class="row">
+      <div class="form-group col-12 mb-4">
+        <p-floatLabel>
+          <input
+            pInputText
+            id="descricao-form-modal-acoes"
+            formControlName="descricao"
+          />
+          <label for="descricao">Descrição *</label>
+        </p-floatLabel>
+        <app-mensagem-alerta
+          campo="descricao"
+          mensagem="Este campo é obrigatório."
+          tipoAlerta="required"
+          [formulario]="formModalAcoes"
+        />
+      </div>
+
+      <div class="form-group col-12 mb-4">
+        <p-floatLabel>
+          <p-dropdown
+            inputId="responsavel"
+            [options]="pessoas"
+            formControlName="responsavel"
+          ></p-dropdown>
+          <label for="responsavel">Responsavel *</label>
+        </p-floatLabel>
+        <app-mensagem-alerta
+          campo="responsavel"
+          mensagem="Este campo é obrigatório."
+          tipoAlerta="required"
+          [formulario]="formModalAcoes"
+        />
+      </div>
+    </div>
+    <div class="flex justify-content-start gap-2">
+      <button type="submit" class="btn btn-primary" autofocus>Adicionar</button>
+    </div>
+  </div>
+</form>
