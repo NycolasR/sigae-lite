@@ -1,7 +1,25 @@
-<app-dados-objetivo></app-dados-objetivo>
-<app-dados-objetivo></app-dados-objetivo>
-<app-dados-objetivo></app-dados-objetivo>
-<app-dados-objetivo></app-dados-objetivo>
-<app-dados-objetivo></app-dados-objetivo>
-<!-- <div *ngFor="let objetivo of objetivos; let i = index">
-</div> -->
+<p-carousel [value]="objetivos" [numVisible]="1" [numScroll]="1">
+  <ng-template let-objetivo pTemplate="objetivo">
+    <div class="me-3 p-1">
+      <app-dados-objetivo [idObjetivo]="objetivo.id"></app-dados-objetivo>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <div class="d-flex justify-content-end align-items-center">
+      <div class="mb-4 mr-4">
+        <button
+          (click)="clicouBtnAnterior.emit(true)"
+          class="btn btn-outline-primary"
+        >
+          <i class="pi pi-arrow-left mr-2"></i> Anterior
+        </button>
+      </div>
+
+      <div class="mb-4">
+        <button type="submit" class="btn btn-primary">
+          Próximo <i class="pi pi-arrow-right ml-2"></i>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</p-carousel>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { PlanoDeAcao } from '../../models/planoDeAcao/planoDeAcao';
 import { Problema } from '../../models/planoDeAcao/problema';
 import { Acao } from '../../models/planoDeAcao/acao';
@@ -57,10 +57,13 @@ export class PlanoService {
   ): Observable<PlanoDeAcao> {
     const planoExistente = this.getPlanoFromStorage();
 
+    if (planoAtualizado.objetivos) {
+      this.atualizarObjetivos(planoAtualizado.objetivos);
+    }
+
     const planoAtualizadoCompleto = new PlanoDeAcao({
       ...planoExistente,
       ...planoAtualizado,
-      objetivos: planoAtualizado.objetivos,
     });
 
     this.savePlanoToStorage(planoAtualizadoCompleto);
@@ -70,6 +73,30 @@ export class PlanoService {
   excluirPlano(): Observable<boolean> {
     localStorage.removeItem(this.localStorageKey);
     return of(true);
+  }
+
+  atualizarObjetivos(objetivosAtualizados: Objetivo[]): void {
+    const plano = this.getPlanoFromStorage();
+
+    plano.objetivos = plano.objetivos.map((objetivo) => {
+      const objetivoAtualizado = objetivosAtualizados.find(
+        (o) => o.id === objetivo.id
+      );
+      return objetivoAtualizado
+        ? { ...objetivo, ...objetivoAtualizado }
+        : objetivo;
+    });
+
+    this.savePlanoToStorage(plano);
+  }
+
+  obterObjetivoPorId(objetivoId: number): Observable<Objetivo | undefined> {
+    return this.obterPlano().pipe(
+      map((plano) => {
+        if (!plano) return undefined;
+        return plano.objetivos.find((obj) => obj.id === objetivoId);
+      })
+    );
   }
 
   adicionarProblema(

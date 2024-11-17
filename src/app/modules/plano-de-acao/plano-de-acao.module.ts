@@ -9,6 +9,7 @@ import { RippleModule } from 'primeng/ripple';
 import { StepperModule } from 'primeng/stepper';
 import { TooltipModule } from 'primeng/tooltip';
 import { MessageService } from 'primeng/api';
+import { CarouselModule } from 'primeng/carousel';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
@@ -52,6 +53,7 @@ import { ModalAcoesComponent } from './plano-de-acao-etapas/problemas-acoes/moda
     TreeTableModule,
     DialogModule,
     DynamicDialogModule,
+    CarouselModule,
   ],
   declarations: [
     PlanoDeAcaoComponent,

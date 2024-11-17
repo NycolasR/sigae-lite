@@ -15,6 +15,8 @@ export class PlanoObjetivosComponent implements OnInit {
   planoDeAcao: PlanoDeAcao = new PlanoDeAcao({});
   formPlanoObjetivos: FormGroup = new FormGroup({});
 
+  salvouPlanoObjetivos = output<PlanoDeAcao>();
+
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly planoService: PlanoService,
@@ -25,8 +27,6 @@ export class PlanoObjetivosComponent implements OnInit {
   ngOnInit() {
     this.obterPlano();
   }
-
-  salvouPlanoObjetivos = output<PlanoDeAcao>();
 
   private obterPlano() {
     this.planoService.obterPlano().subscribe((res: PlanoDeAcao) => {
@@ -51,6 +51,7 @@ export class PlanoObjetivosComponent implements OnInit {
 
   criarObjetivoControl(objetivo: Objetivo): FormGroup {
     return this.formBuilder.group({
+      id: [objetivo.id],
       nome: [objetivo.nome],
       selecionado: [objetivo.selecionado],
     });
@@ -132,11 +133,13 @@ export class PlanoObjetivosComponent implements OnInit {
       this.planoService
         .atualizarPlano(this.formPlanoObjetivos.value)
         .subscribe((res: PlanoDeAcao) => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Sucesso!',
-            detail: 'Plano e objetivo(s) salvos com sucesso!',
-          });
+          if (!this.formPlanoObjetivos.pristine) {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Sucesso!',
+              detail: 'Plano e objetivo(s) salvos com sucesso!',
+            });
+          }
 
           this.salvouPlanoObjetivos.emit(res);
         });

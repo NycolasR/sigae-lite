@@ -1,11 +1,10 @@
 <div class="content">
-  <h3 class="mb-3">Objetivo 1</h3>
+  <h3 class="mb-3">{{ objetivo.nome }}</h3>
 
   <div id="form-problema">
-    <form [formGroup]="formProblema" (ngSubmit)="salvarDadosObjetivo()">
+    <form [formGroup]="formProblema" (ngSubmit)="adicionarProblema()">
       <div class="p-grid p-fluid">
         <div class="row">
-          <!-- Primeira linha de campos -->
           <div class="form-group col-12 col-md-8 col-lg-8 mb-4">
             <p-floatLabel>
               <input
@@ -48,7 +47,6 @@
             >
           </div>
 
-          <!-- Segunda linha de campos -->
           <div class="form-group col-12 col-md-6 col-lg-6 mb-4">
             <p-floatLabel>
               <input
@@ -141,7 +139,7 @@
       <ng-template pTemplate="emptymessage">
         <tr>
           <td colspan="6" class="text-center">
-            Não existem pessoas cadastradas.
+            Não existem problemas cadastrados.
           </td>
         </tr>
       </ng-template>

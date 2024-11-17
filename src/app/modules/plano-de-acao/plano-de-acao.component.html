@@ -1,7 +1,7 @@
 <div class="content">
   <app-titulo-pagina titulo="Plano de Ação" />
 
-  <div class="mx-3 mb-5">
+  <div class="mx-3 mb-3">
     <p-stepper [linear]="true">
       <p-stepperPanel header="Plano e Objetivos">
         <ng-template
@@ -24,20 +24,10 @@
           let-index="index"
         >
           <div class="flex flex-column h-12rem">
-            <app-descricao-objetivos></app-descricao-objetivos>
-          </div>
-          <div class="flex pt-4 justify-content-between">
-            <p-button
-              label="Back"
-              icon="pi pi-arrow-left"
-              (onClick)="prevCallback.emit()"
-            />
-            <p-button
-              label="Next"
-              icon="pi pi-arrow-right"
-              iconPos="right"
-              (onClick)="nextCallback.emit()"
-            />
+            <app-descricao-objetivos
+              (clicouBtnAnterior)="prevCallback.emit()"
+              (salvouProblemasDosObjetivos)="nextCallback.emit()"
+            ></app-descricao-objetivos>
           </div>
         </ng-template>
       </p-stepperPanel>
