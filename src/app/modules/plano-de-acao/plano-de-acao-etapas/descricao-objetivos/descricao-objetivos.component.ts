@@ -14,7 +14,7 @@ export class DescricaoObjetivosComponent implements OnInit {
   objetivos: Objetivo[] = [];
 
   clicouBtnAnterior = output<boolean>();
-  podeAvancar = output<true>();
+  podeAvancar = output<boolean>();
 
   constructor(
     private readonly planoService: PlanoService,
@@ -45,13 +45,14 @@ export class DescricaoObjetivosComponent implements OnInit {
         this.messageService.add({
           severity: 'error',
           summary: 'Erro!',
-          detail: `Adicione pelo menos um problema aos objetivos selecionados para prosseguir.`,
+          detail:
+            'Adicione pelo menos um problema aos objetivos selecionados para prosseguir.',
         });
       } else {
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso!',
-          detail: `Problemas salvos com sucesso!`,
+          detail: 'Problemas salvos com sucesso!',
         });
         this.podeAvancar.emit(true);
       }

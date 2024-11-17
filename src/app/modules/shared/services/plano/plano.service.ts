@@ -110,10 +110,26 @@ export class PlanoService {
       throw new Error(`Objetivo com ID ${idObjetivo} não encontrado`);
     }
 
-    objetivo.problemas = [...(objetivo.problemas || []), problema];
+    const ultimoId = this.getUltimoIdProblema();
+    const novoId = ultimoId + 1;
+
+    this.setUltimoIdProblema(novoId);
+
+    const problemaComId = { ...problema, id: novoId };
+
+    objetivo.problemas = [...(objetivo.problemas || []), problemaComId];
     this.savePlanoToStorage(plano);
 
-    return of(problema);
+    return of(problemaComId);
+  }
+
+  private getUltimoIdProblema(): number {
+    const id = localStorage.getItem('ultimoIdProblema');
+    return id ? parseInt(id, 10) : 0;
+  }
+
+  private setUltimoIdProblema(id: number): void {
+    localStorage.setItem('ultimoIdProblema', id.toString());
   }
 
   atualizarProblema(
@@ -161,6 +177,20 @@ export class PlanoService {
     return of(true);
   }
 
+  obterAcao(idProblema: number, idAcao: number): Observable<Acao | null> {
+    const plano = this.getPlanoFromStorage();
+
+    for (const objetivo of plano.objetivos) {
+      const problema = objetivo.problemas?.find((p) => p.id === idProblema);
+      if (problema) {
+        const acao = problema.acoes?.find((a) => a.id === idAcao);
+        return of(acao || null);
+      }
+    }
+
+    return of(null);
+  }
+
   adicionarAcao(
     idObjetivo: number,
     idProblema: number,
@@ -180,10 +210,26 @@ export class PlanoService {
       );
     }
 
-    problema.acoes = [...(problema.acoes || []), acao];
+    const ultimoId = this.getUltimoIdAcao();
+    const novoId = ultimoId + 1;
+
+    this.setUltimoIdAcao(novoId);
+
+    const acaoComId = { ...acao, id: novoId };
+
+    problema.acoes = [...(problema.acoes || []), acaoComId];
     this.savePlanoToStorage(plano);
 
-    return of(acao);
+    return of(acaoComId);
+  }
+
+  private getUltimoIdAcao(): number {
+    const id = localStorage.getItem('ultimoIdAcao');
+    return id ? parseInt(id, 10) : 0;
+  }
+
+  private setUltimoIdAcao(id: number): void {
+    localStorage.setItem('ultimoIdAcao', id.toString());
   }
 
   atualizarAcao(
