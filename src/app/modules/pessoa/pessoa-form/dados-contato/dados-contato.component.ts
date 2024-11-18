@@ -89,7 +89,7 @@ export class DadosContatoComponent implements OnInit {
       this.messageService.add({
         severity: 'success',
         summary: 'Sucesso!',
-        detail: `Telefone excluído com sucesso!`,
+        detail: 'Telefone excluído com sucesso!',
       });
     }
   }
@@ -116,7 +116,7 @@ export class DadosContatoComponent implements OnInit {
             this.messageService.add({
               severity: 'success',
               summary: 'Sucesso!',
-              detail: `Dados de contato salvos com sucesso!`,
+              detail: 'Dados de contato salvos com sucesso!',
             });
           }
           this.salvouDadosDeContato.emit(res);
