@@ -1,7 +1,7 @@
 <form [formGroup]="formModalAcoes" (ngSubmit)="salvarDadosAcao()">
   <div class="p-grid p-fluid">
     <div class="row">
-      <div class="form-group col-12 mt-2 mb-4">
+      <div class="form-group col-12 mt-4 mb-4">
         <p-floatLabel>
           <input
             pInputText
@@ -25,6 +25,7 @@
             [options]="pessoas"
             formControlName="responsavel"
             optionLabel="nome"
+            [appendTo]="'body'"
           ></p-dropdown>
           <label for="responsavel">Responsavel *</label>
         </p-floatLabel>
