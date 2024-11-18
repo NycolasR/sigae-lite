@@ -9,15 +9,6 @@ import { Router } from '@angular/router';
   selector: 'app-pessoa',
   templateUrl: './pessoa.component.html',
   styleUrls: ['./pessoa.component.scss'],
-  animations: [
-    trigger('overlayContentAnimation', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('200ms', style({ opacity: 1 })),
-      ]),
-      transition(':leave', [animate('200ms', style({ opacity: 0 }))]),
-    ]),
-  ],
 })
 export class PessoaComponent implements OnInit {
   pessoas!: Pessoa[];

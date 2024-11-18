@@ -21,6 +21,12 @@ const routes: Routes = [
       import('./modules/pessoa/pessoa.module').then((p) => p.PessoaModule),
   },
   {
+    path: 'agenda',
+    canActivateChild: [AuthGuard],
+    loadChildren: () =>
+      import('./modules/agenda/agenda.module').then((a) => a.AgendaModule),
+  },
+  {
     path: 'plano-de-acao',
     canActivateChild: [AuthGuard],
     loadChildren: () =>

@@ -63,7 +63,13 @@ export class MainMenuComponent implements OnInit, OnDestroy {
             this.router.navigate(['/pessoa']);
           },
         },
-        { label: 'Agenda', icon: 'pi pi-calendar' },
+        {
+          label: 'Agenda',
+          icon: 'pi pi-calendar',
+          command: () => {
+            this.router.navigate(['/agenda']);
+          },
+        },
         {
           label: 'Plano de Ação',
           icon: 'pi pi-copy',

@@ -1,0 +1,63 @@
+<div class="content">
+  <app-titulo-pagina titulo="Agenda" />
+
+  <div class="mx-5 mb-5 mt-4">
+    <div class="border d-flex flex-column flex-lg-row align-items-lg-start">
+      <div
+        id="calendario"
+        class="mb-4 mx-auto mx-lg-0"
+        style="max-width: 500px"
+      >
+        <form [formGroup]="formCalendario">
+          <p-calendar
+            class="max-w-full"
+            [inline]="true"
+            [showWeek]="true"
+            formControlName="data"
+          ></p-calendar>
+        </form>
+      </div>
+
+      <div id="tabela-eventos" class="flex-grow-1 overflow-auto">
+        <p-table
+          [value]="eventos"
+          [paginator]="true"
+          [rows]="5"
+          [tableStyle]="{ 'min-width': '50rem' }"
+          [rowsPerPageOptions]="[5]"
+        >
+          <ng-template pTemplate="header">
+            <tr>
+              <th
+                scope="col"
+                [style]="coluna.width"
+                [pSortableColumn]="coluna.field"
+                *ngFor="let coluna of colunas"
+              >
+                <div class="d-flex justify-content-between align-items-center">
+                  <p class="w-fit">{{ coluna.header }}</p>
+                  <p-sortIcon [field]="coluna.field" />
+                </div>
+              </th>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate="body" let-evento let-rowIndex="rowIndex">
+            <tr>
+              <td>{{ evento.nome ?? "-" }}</td>
+              <td>{{ evento.hora ?? "-" }}</td>
+              <td>{{ evento.local ?? "-" }}</td>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="3" class="text-center">
+                Não existem eventos para a data selecionada.
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</div>
