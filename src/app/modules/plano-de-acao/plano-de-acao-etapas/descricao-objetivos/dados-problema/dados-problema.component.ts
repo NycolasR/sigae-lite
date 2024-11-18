@@ -16,11 +16,11 @@ import { EtapaService } from '../../../../shared/services/etapa/etapa.service';
 import { PrioridadeEnum } from '../../../../shared/enum/prioridade-enum';
 
 @Component({
-  selector: 'app-dados-objetivo',
-  templateUrl: './dados-objetivo.component.html',
-  styleUrls: ['./dados-objetivo.component.scss'],
+  selector: 'app-dados-problema',
+  templateUrl: './dados-problema.component.html',
+  styleUrls: ['./dados-problema.component.scss'],
 })
-export class DadosObjetivoComponent implements OnInit {
+export class DadosProblemaComponent implements OnInit {
   formProblema: FormGroup = new FormGroup({});
   objetivo: Objetivo = new Objetivo({});
 

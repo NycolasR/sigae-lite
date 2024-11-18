@@ -6,11 +6,11 @@ import { PlanoDeAcao } from '../../../shared/models/planoDeAcao/planoDeAcao';
 import { MessageService } from 'primeng/api';
 
 @Component({
-  selector: 'app-descricao-objetivos',
-  templateUrl: './descricao-objetivos.component.html',
-  styleUrls: ['./descricao-objetivos.component.scss'],
+  selector: 'app-problemas-objetivos',
+  templateUrl: './problemas-objetivos.component.html',
+  styleUrls: ['./problemas-objetivos.component.scss'],
 })
-export class DescricaoObjetivosComponent implements OnInit {
+export class ProblemasObjetivosComponent implements OnInit {
   objetivos: Objetivo[] = [];
 
   clicouBtnAnterior = output<boolean>();

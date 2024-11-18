@@ -26,12 +26,12 @@ import {
 
 import { SharedSigaeModule } from '../shared/shared.module';
 import { PlanoDeAcaoComponent } from './plano-de-acao.component';
-import { DadosObjetivoComponent } from './plano-de-acao-etapas/descricao-objetivos/dados-objetivo/dados-objetivo.component';
 import { PlanoObjetivosComponent } from './plano-de-acao-etapas/plano-objetivos/plano-objetivos.component';
 import { ProblemasAcoesComponent } from './plano-de-acao-etapas/problemas-acoes/problemas-acoes.component';
 import { PlanoDeAcaoRoutingModule } from './plano-de-acao.routing.module';
-import { DescricaoObjetivosComponent } from './plano-de-acao-etapas/descricao-objetivos/descricao-objetivos.component';
 import { ModalAcoesComponent } from './plano-de-acao-etapas/problemas-acoes/modal-acoes/modal-acoes.component';
+import { ProblemasObjetivosComponent } from './plano-de-acao-etapas/descricao-objetivos/problemas-objetivos.component';
+import { DadosProblemaComponent } from './plano-de-acao-etapas/descricao-objetivos/dados-problema/dados-problema.component';
 
 @NgModule({
   imports: [
@@ -58,9 +58,9 @@ import { ModalAcoesComponent } from './plano-de-acao-etapas/problemas-acoes/moda
   declarations: [
     PlanoDeAcaoComponent,
     PlanoObjetivosComponent,
-    DescricaoObjetivosComponent,
+    ProblemasObjetivosComponent,
     ProblemasAcoesComponent,
-    DadosObjetivoComponent,
+    DadosProblemaComponent,
     ModalAcoesComponent,
   ],
   providers: [

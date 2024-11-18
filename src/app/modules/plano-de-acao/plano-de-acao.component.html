@@ -16,7 +16,7 @@
           </div>
         </ng-template>
       </p-stepperPanel>
-      <p-stepperPanel header="Descrição dos Objetivos">
+      <p-stepperPanel header="Problemas dos Objetivos">
         <ng-template
           pTemplate="content"
           let-prevCallback="prevCallback"
@@ -24,10 +24,10 @@
           let-index="index"
         >
           <div class="flex flex-column h-12rem">
-            <app-descricao-objetivos
+            <app-problemas-objetivos
               (clicouBtnAnterior)="prevCallback.emit()"
               (podeAvancar)="nextCallback.emit()"
-            ></app-descricao-objetivos>
+            ></app-problemas-objetivos>
           </div>
         </ng-template>
       </p-stepperPanel>
