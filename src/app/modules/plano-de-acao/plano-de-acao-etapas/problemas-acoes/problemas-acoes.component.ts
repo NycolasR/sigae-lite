@@ -54,7 +54,8 @@ export class ProblemasAcoesComponent implements OnInit, OnDestroy {
   abrirModalAcoes(idObjetivo: number, idProblema: number) {
     this.ref = this.dialogService.open(ModalAcoesComponent, {
       header: 'Criar ação',
-      width: '50%',
+      width: '50vw',
+      style: { maxWidth: '90vw', minWidth: '300px' },
       data: {
         idAcao: null,
         idProblema,
@@ -70,7 +71,8 @@ export class ProblemasAcoesComponent implements OnInit, OnDestroy {
   editarAcao(idObjetivo: number, idProblema: number, idAcao: number) {
     this.ref = this.dialogService.open(ModalAcoesComponent, {
       header: 'Editar ação',
-      width: '50%',
+      width: '50vw',
+      style: { maxWidth: '90vw', minWidth: '300px' },
       data: {
         idAcao,
         idProblema,
