@@ -137,7 +137,7 @@ export class EventoService {
       return eventosJson.map((evento: any) => {
         return new Evento({
           ...evento,
-          data: new Date(evento.data), // Converte para Date
+          data: new Date(evento.data),
         });
       });
     }
