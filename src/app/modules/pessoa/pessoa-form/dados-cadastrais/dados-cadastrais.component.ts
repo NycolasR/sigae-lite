@@ -13,6 +13,8 @@ import { FormularioService } from '../../../shared/services/formulario/formulari
 import { PessoaService } from '../../../shared/services/pessoa/pessoa.service';
 import { Pessoa } from '../../../shared/models/pessoa/pessoa';
 import { Router } from '@angular/router';
+import { EscolaService } from './../../../shared/services/escola/escola.service';
+import { Escola } from '../../../shared/models/pessoa/escola';
 
 @Component({
   selector: 'app-dados-cadastrais',
@@ -21,7 +23,7 @@ import { Router } from '@angular/router';
 })
 export class DadosCadastraisComponent implements OnInit {
   pessoa: Pessoa = new Pessoa({});
-  escolas: string[] = ['Escola A', 'Escola B', 'Escola C'];
+  escolas: Escola[] = [];
   modoEdicao: boolean = false;
   formDadosCadastrais: FormGroup = new FormGroup({});
 
@@ -33,6 +35,7 @@ export class DadosCadastraisComponent implements OnInit {
     private readonly router: Router,
     private readonly formBuilder: FormBuilder,
     private readonly pessoaService: PessoaService,
+    private readonly escolaService: EscolaService,
     private readonly messageService: MessageService,
     private readonly formularioService: FormularioService
   ) {}
@@ -40,6 +43,7 @@ export class DadosCadastraisComponent implements OnInit {
   ngOnInit(): void {
     this.tratarModoEdicao();
     this.obterPessoa();
+    this.obterEscolas();
 
     this.formDadosCadastrais
       .get('isPessoaJuridica')
@@ -69,6 +73,12 @@ export class DadosCadastraisComponent implements OnInit {
         });
         this.router.navigate(['/pessoa']);
       }
+    });
+  }
+
+  private obterEscolas(): void {
+    this.escolaService.obterEscolas().subscribe((res: Escola[]) => {
+      this.escolas = res;
     });
   }
 

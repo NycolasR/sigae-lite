@@ -27,6 +27,7 @@
               <p-dropdown
                 inputId="etapa"
                 [options]="etapas"
+                optionLabel="descricao"
                 formControlName="etapa"
               ></p-dropdown>
               <label for="etapa">Etapa</label>
@@ -63,6 +64,7 @@
               <p-dropdown
                 inputId="prioridade"
                 [options]="prioridades"
+                optionLabel="nome"
                 formControlName="prioridade"
               ></p-dropdown>
               <label for="prioridade">Prioridade *</label>
@@ -80,6 +82,7 @@
               <p-dropdown
                 inputId="categoria"
                 [options]="categorias"
+                optionLabel="descricao"
                 formControlName="categoria"
               ></p-dropdown>
               <label for="categoria">Categoria *</label>
@@ -132,7 +135,7 @@
           <td>{{ problema.etapa?.descricao ?? "-" }}</td>
           <td>{{ problema.possuiCausa ? "Sim" : "Não" }}</td>
           <td>{{ problema.resultado ?? "-" }}</td>
-          <td>{{ problema.prioridade ?? "-" }}</td>
+          <td>{{ problema.prioridade.nome ?? "-" }}</td>
           <td>{{ problema.categoria.descricao ?? "-" }}</td>
         </tr>
       </ng-template>

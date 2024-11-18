@@ -110,7 +110,10 @@ export class DadosEnderecoComponent implements OnInit {
       enderecoCompleto: [endereco?.enderecoCompleto, Validators.required],
       cep: [endereco?.cep, validarCep()],
       pais: [endereco?.pais, Validators.required],
-      estado: [endereco?.estado, Validators.required],
+      estado: [
+        this.isPaisBrasil ? endereco?.estado : endereco?.estado.nome,
+        Validators.required,
+      ],
       municipio: [endereco?.municipio, Validators.required],
     });
   }

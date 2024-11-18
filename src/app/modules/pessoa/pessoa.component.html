@@ -46,7 +46,9 @@
                 pessoa.endereco?.municipio?.nome || pessoa.endereco?.municipio
               }}
               -
-              {{ pessoa.endereco?.estado?.sigla || pessoa.endereco?.estado }}
+              {{
+                pessoa.endereco?.estado?.sigla || pessoa.endereco?.estado.nome
+              }}
             </td>
             <td>
               <div class="flex-container">

@@ -3,13 +3,17 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { MessageService } from 'primeng/api';
 
+import { switchMap } from 'rxjs';
+
 import { Etapa } from '../../../../shared/models/planoDeAcao/etapa';
 import { Objetivo } from '../../../../shared/models/planoDeAcao/objetivo';
 import { Problema } from '../../../../shared/models/planoDeAcao/problema';
 import { Categoria } from '../../../../shared/models/planoDeAcao/categoria';
-import { FormularioService } from '../../../../shared/services/formulario/formulario.service';
 import { PlanoService } from '../../../../shared/services/plano/plano.service';
-import { switchMap } from 'rxjs';
+import { FormularioService } from '../../../../shared/services/formulario/formulario.service';
+import { CategoriaService } from '../../../../shared/services/categoria/categoria.service';
+import { EtapaService } from '../../../../shared/services/etapa/etapa.service';
+import { PrioridadeEnum } from '../../../../shared/enum/prioridade-enum';
 
 @Component({
   selector: 'app-dados-objetivo',
@@ -22,9 +26,9 @@ export class DadosObjetivoComponent implements OnInit {
 
   problemas: Problema[] = [];
 
-  etapas: string[] = ['Etapa A', 'Etapa B', 'Etapa C'];
-  categorias: string[] = ['Categoria A', 'Categoria B', 'Categoria C'];
-  prioridades: string[] = ['Prioridade A', 'Prioridade B', 'Prioridade C'];
+  etapas: Etapa[] = [];
+  categorias: Categoria[] = [];
+  prioridades: { nome: string; value: PrioridadeEnum }[] = [];
 
   idObjetivo = input.required<number>();
 
@@ -64,11 +68,17 @@ export class DadosObjetivoComponent implements OnInit {
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly planoService: PlanoService,
+    private readonly etapaService: EtapaService,
     private readonly messageService: MessageService,
+    private readonly categoriaService: CategoriaService,
     private readonly formularioService: FormularioService
   ) {}
 
   ngOnInit() {
+    this.obterEtapas();
+    this.obterCategorias();
+    this.obterPrioridades();
+
     this.planoService
       .obterObjetivoPorId(this.idObjetivo())
       .subscribe((res: Objetivo | undefined) => {
@@ -78,6 +88,25 @@ export class DadosObjetivoComponent implements OnInit {
         }
       });
     this.buildForm();
+  }
+
+  private obterEtapas() {
+    this.etapaService.obterEtapas().subscribe((res: Etapa[]) => {
+      this.etapas = res;
+    });
+  }
+
+  private obterCategorias() {
+    this.categoriaService.obterCategorias().subscribe((res: Categoria[]) => {
+      this.categorias = res;
+    });
+  }
+
+  private obterPrioridades() {
+    this.prioridades = Object.values(PrioridadeEnum).map((value) => ({
+      nome: value,
+      value: value,
+    }));
   }
 
   buildForm() {
